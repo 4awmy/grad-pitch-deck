@@ -9,6 +9,9 @@
   --red: #b7472a;
   --green: #4f7d45;
   --violet: #5d4c86;
+  --cyan: #0f8f87;
+  --coral: #c55339;
+  --paper-dim: #82796c;
   --white: #fffdf8;
   --shadow: 0 24px 80px rgba(32, 25, 15, 0.12);
   --display: "Fraunces", Georgia, serif;
@@ -527,7 +530,7 @@ h3 {
 .timeline-card {
   position: relative;
   padding: 1.3rem 1.1rem 1.1rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 253, 248, 0.72);
   border: 1px solid var(--line);
   min-height: 132px;
 }
@@ -554,7 +557,21 @@ h3 {
   font-size: 0.72rem;
   margin-bottom: 1rem;
 }
-.timeline-card h3 { font-size: 1rem; line-height: 1.35; }
+.timeline-card h3 { font-size: 1rem; line-height: 1.35; margin-bottom: 0.45rem; }
+.timeline-card p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--paper-dim);
+  line-height: 1.5;
+}
+.timeline-foot {
+  margin-top: 1rem;
+  max-width: 760px;
+  padding: 1rem 1.2rem;
+  border-left: 2px solid var(--coral);
+  color: var(--muted);
+  background: rgba(197, 83, 57, 0.05);
+}
 .idea-grid {
   grid-template-columns: repeat(6, 1fr);
 }
