@@ -3,330 +3,1058 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Graduation Project Pitch — Team Deck</title>
+<title>Graduation Project Pitch — Team 2026–2027 · AAST</title>
+<meta name="description" content="Five AI project concepts by a six-person team at the Arab Academy for Science and Technology. Supervised by Dr. Mahmoud Shawky.">
+<meta property="og:title" content="Graduation Project Pitch — AAST 2026–2027">
+<meta property="og:description" content="Five AI project concepts. Three sponsorship paths. One supervising professor.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#0B0E1A;
-    --surface:#131A2E;
-    --surface-2:#1B2340;
-    --violet:#6C5CE7;
-    --violet-soft:#9B8CFF;
-    --cyan:#45E0D6;
-    --coral:#FF6B5B;
-    --paper:#F5F6FA;
-    --paper-dim:#B8BEDA;
-    --line:rgba(245,246,250,0.12);
-    --display: 'Space Grotesk', sans-serif;
-    --body: 'Inter', sans-serif;
-    --mono: 'JetBrains Mono', monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%;background:var(--ink);color:var(--paper);font-family:var(--body);overflow:hidden;}
-  @media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;} }
+/* ─── DESIGN TOKENS ─── */
+:root {
+  --navy:   #0F2351;
+  --blue:   #2563EB;
+  --teal:   #0891B2;
+  --coral:  #E55B4D;
+  --green:  #059669;
+  --white:  #FFFFFF;
+  --bg:     #F8FAFC;
+  --text:   #0F172A;
+  --mid:    #475569;
+  --muted:  #94A3B8;
+  --border: #E2E8F0;
+  --panel-w: 26%;
+  --display: 'Plus Jakarta Sans', sans-serif;
+  --body:    'Inter', sans-serif;
+  --mono:    'DM Mono', monospace;
+}
 
-  #deck{position:relative;width:100vw;height:100vh;}
-  .slide{
-    position:absolute; inset:0;
-    display:flex; flex-direction:column; justify-content:center;
-    padding: 6vh 8vw;
-    opacity:0; pointer-events:none;
-    transform: translateY(18px);
-    transition: opacity .5s ease, transform .5s ease;
-  }
-  .slide.active{opacity:1; pointer-events:auto; transform:translateY(0);}
+/* ─── RESET ─── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; background: var(--navy); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
 
-  .eyebrow{
-    font-family:var(--mono); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--cyan); margin-bottom:1.1rem; display:flex; align-items:center; gap:.6rem;
-  }
-  .eyebrow::before{content:'';width:22px;height:1px;background:var(--cyan);display:inline-block;}
+/* ─── DECK SHELL ─── */
+#deck-shell {
+  width: 100vw; height: 100vh;
+  display: flex; flex-direction: column;
+  font-family: var(--body);
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+}
 
-  h1{
-    font-family:var(--display); font-weight:700; line-height:1.02;
-    font-size:clamp(2.4rem, 5.2vw, 4.6rem); letter-spacing:-0.02em;
-  }
-  h2{
-    font-family:var(--display); font-weight:600; line-height:1.05;
-    font-size:clamp(1.8rem, 3.4vw, 3rem); letter-spacing:-0.01em; margin-bottom:.4rem;
-  }
-  .lede{font-size:clamp(1rem,1.3vw,1.25rem); color:var(--paper-dim); max-width:60ch; margin-top:1.2rem; line-height:1.55;}
-  .accent{color:var(--violet-soft);}
-  .accent-c{color:var(--cyan);}
-  .accent-r{color:var(--coral);}
+/* ─── SLIDE ─── */
+.slide {
+  position: absolute; inset: 0;
+  display: flex;
+  opacity: 0; pointer-events: none;
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-  /* progress + nav */
-  #hud{position:fixed; bottom:28px; left:0; right:0; display:flex; align-items:center; justify-content:center; gap:10px; z-index:50;}
-  .dot{width:7px;height:7px;border-radius:50%;background:var(--line); transition:.3s;}
-  .dot.on{background:var(--cyan); width:22px; border-radius:4px;}
-  #idx{position:fixed; top:28px; right:8vw; font-family:var(--mono); font-size:.78rem; color:var(--paper-dim); letter-spacing:.08em; z-index:50;}
-  .navbtn{
-    position:fixed; top:50%; transform:translateY(-50%); z-index:50;
-    width:44px;height:44px;border-radius:50%; border:1px solid var(--line); background:rgba(255,255,255,0.02);
-    color:var(--paper); font-family:var(--mono); font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:.2s;
-  }
-  .navbtn:hover{border-color:var(--cyan); color:var(--cyan);}
-  .navbtn:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
-  #prev{left:28px;} #next{right:28px;}
-  .navbtn.hidden{opacity:0; pointer-events:none;}
+/* ─── LEFT PANEL ─── */
+.left-panel {
+  width: var(--panel-w);
+  min-width: 180px;
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3.5vh 2.2vw 3.5vh 2.8vw;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.left-panel::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 10%; bottom: 10%;
+  width: 1px;
+  background: rgba(255,255,255,0.08);
+}
+.panel-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+}
+.panel-label span {
+  display: block;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.7rem;
+  margin-top: 0.5rem;
+}
+.ghost-num {
+  font-family: var(--display);
+  font-size: clamp(5rem, 10vw, 9rem);
+  font-weight: 800;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  user-select: none;
+  letter-spacing: -0.04em;
+}
 
-  /* signature: pipeline / build strip */
-  .pipeline{display:flex; gap:0; margin-top:2.4rem; max-width:900px;}
-  .pipe-node{flex:1; position:relative; padding:1.3rem 1.4rem 1.3rem 0; border-top:2px solid var(--line);}
-  .pipe-node:first-child{border-top-color:var(--cyan);}
-  .pipe-node::before{
-    content:''; position:absolute; top:-6px; left:0; width:11px; height:11px; border-radius:50%;
-    background:var(--ink); border:2px solid var(--line);
-  }
-  .pipe-node:first-child::before{border-color:var(--cyan); background:var(--cyan);}
-  .pipe-tag{font-family:var(--mono); font-size:.72rem; letter-spacing:.1em; color:var(--paper-dim); text-transform:uppercase;}
-  .pipe-title{font-family:var(--display); font-weight:600; font-size:1.15rem; margin:.35rem 0 .4rem;}
-  .pipe-desc{font-size:.88rem; color:var(--paper-dim); line-height:1.5;}
+/* ─── RIGHT PANEL ─── */
+.right-panel {
+  flex: 1;
+  background: var(--white);
+  padding: 4.5vh 5vw 4.5vh 4.5vw;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
 
-  /* team grid */
-  .grid-team{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); margin-top:2.4rem; max-width:920px; border:1px solid var(--line);}
-  .member{background:var(--ink); padding:1.5rem 1.4rem;}
-  .m-name{font-family:var(--display); font-weight:600; font-size:1.05rem;}
-  .m-major{display:inline-block; margin-top:.6rem; font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; padding:.28rem .6rem; border-radius:3px;}
-  .tag-cs{color:var(--cyan); border:1px solid rgba(69,224,214,.35); background:rgba(69,224,214,.06);}
-  .tag-cyber{color:var(--coral); border:1px solid rgba(255,107,91,.35); background:rgba(255,107,91,.06);}
-  .tag-se{color:var(--violet-soft); border:1px solid rgba(155,140,255,.35); background:rgba(155,140,255,.06);}
+/* ─── HERO SLIDE (full navy) ─── */
+.slide.hero-slide { background: var(--navy); }
+.slide.hero-slide .left-panel { border-right: none; }
+.slide.hero-slide .left-panel::after { display: none; }
+.slide.hero-slide .right-panel {
+  background: var(--navy);
+  justify-content: center;
+  align-items: flex-start;
+}
 
-  /* sponsor table */
-  .table-wrap{margin-top:2.2rem; max-width:900px; border:1px solid var(--line);}
-  .trow{display:grid; grid-template-columns:1.1fr 1.4fr 1.4fr; border-top:1px solid var(--line);}
-  .trow:first-child{border-top:none;}
-  .trow.head .tcell{font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--paper-dim);}
-  .tcell{padding:1rem 1.3rem; font-size:.92rem; display:flex; align-items:center;}
-  .co-name{font-family:var(--display); font-weight:600; font-size:1.02rem;}
-  .badge{font-family:var(--mono); font-size:.65rem; letter-spacing:.06em; padding:.15rem .5rem; border-radius:3px; margin-left:.6rem; text-transform:uppercase;}
-  .badge-select{color:var(--coral); border:1px solid rgba(255,107,91,.4);}
-  .badge-open{color:var(--cyan); border:1px solid rgba(69,224,214,.35);}
+/* ─── TYPOGRAPHY ─── */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--blue); display: inline-block; }
 
-  /* plan cards */
-  .plans{display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; margin-top:2.2rem; max-width:980px;}
-  .plan-card{border:1px solid var(--line); padding:1.5rem 1.4rem; background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);}
-  .plan-card.primary{border-color:rgba(69,224,214,.4);}
-  .plan-tag{font-family:var(--mono); font-size:.72rem; color:var(--paper-dim); letter-spacing:.1em;}
-  .plan-card.primary .plan-tag{color:var(--cyan);}
-  .plan-name{font-family:var(--display); font-weight:700; font-size:1.5rem; margin:.3rem 0 .8rem;}
-  .plan-body{font-size:.88rem; color:var(--paper-dim); line-height:1.6;}
+h1, h2 { font-family: var(--display); }
+h1 {
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--white);
+}
+h2 {
+  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.lede {
+  font-size: clamp(0.88rem, 1.1vw, 1.05rem);
+  color: var(--mid);
+  line-height: 1.65;
+  max-width: 58ch;
+  margin-top: 0.9rem;
+}
+.lede.white { color: rgba(255,255,255,0.65); }
+.placeholder { color: var(--muted); font-style: italic; }
 
-  .divider{width:100%; height:1px; background:var(--line); margin:2.2rem 0 1.6rem;}
-  .const-box{border:1px solid rgba(255,107,91,.35); background:rgba(255,107,91,.05); padding:1.6rem 1.8rem; max-width:760px; margin-top:1rem;}
-  .const-label{font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; color:var(--coral); text-transform:uppercase; margin-bottom:.5rem;}
+/* ─── HERO PILLS ─── */
+.hero-pills { display: flex; gap: 0.6rem; margin-top: 1.8rem; flex-wrap: wrap; }
+.hero-pill {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.55);
+  border-radius: 3px;
+}
 
-  .timeline{margin-top:2.4rem; max-width:820px;}
-  .t-item{display:grid; grid-template-columns:120px 1fr; gap:1.5rem; padding:1rem 0; border-top:1px solid var(--line);}
-  .t-item:first-child{border-top:none;}
-  .t-date{font-family:var(--mono); font-size:.82rem; color:var(--cyan);}
-  .t-what{font-size:.92rem; color:var(--paper-dim);}
+/* ─── DIVIDER ─── */
+.divider { width: 100%; height: 1px; background: var(--border); margin: 1.6rem 0; }
 
-  .ask-grid{display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:2.2rem; max-width:900px;}
-  .ask-item{border-left:2px solid var(--violet); padding-left:1.2rem;}
-  .ask-item h3{font-family:var(--display); font-size:1.05rem; margin-bottom:.4rem;}
-  .ask-item p{font-size:.86rem; color:var(--paper-dim); line-height:1.55;}
+/* ─── AGENDA ─── */
+.agenda-list { margin-top: 1.4rem; display: flex; flex-direction: column; gap: 0; }
+.agenda-item {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 0.8rem;
+  align-items: start;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--border);
+}
+.agenda-item:first-child { border-top: none; }
+.agenda-num { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); padding-top: 0.18rem; }
+.agenda-text h3 { font-family: var(--display); font-size: 1rem; font-weight: 600; color: var(--text); }
+.agenda-text p { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.4; }
 
-  .placeholder{color:var(--paper-dim); font-style:italic;}
-  .kicker-num{font-family:var(--mono); color:var(--paper-dim); font-size:.85rem;}
+/* ─── TEAM GRID ─── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 1.4rem;
+  max-width: 900px;
+}
+.member-card {
+  background: var(--white);
+  padding: 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.member-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  background: var(--bg);
+}
+.member-name { font-family: var(--display); font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.member-role { font-size: 0.72rem; color: var(--mid); line-height: 1.4; }
+.member-links { display: flex; gap: 0.5rem; margin-top: 0.2rem; align-items: center; }
+.member-links a {
+  display: flex; align-items: center;
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em;
+  text-decoration: none; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 0.18rem 0.45rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+.member-links a:hover { color: var(--blue); border-color: var(--blue); }
+.badge {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.badge-cs    { color: var(--teal);  border-color: rgba(8,145,178,0.3);  background: rgba(8,145,178,0.06); }
+.badge-cyber { color: var(--coral); border-color: rgba(229,91,77,0.3);  background: rgba(229,91,77,0.06); }
+.badge-se    { color: var(--blue);  border-color: rgba(37,99,235,0.3);  background: rgba(37,99,235,0.06); }
+.badge-highlight {
+  background: rgba(37,99,235,0.08);
+  border: 1px solid rgba(37,99,235,0.2);
+  border-radius: 3px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.58rem;
+  font-family: var(--mono);
+  color: var(--blue);
+  letter-spacing: 0.06em;
+}
 
-  @media (max-width: 720px){
-    .grid-team{grid-template-columns:1fr 1fr;}
-    .plans{grid-template-columns:1fr;}
-    .trow{grid-template-columns:1fr;}
-    .ask-grid{grid-template-columns:1fr;}
-    .pipeline{flex-direction:column; gap:1rem;}
-  }
+/* ─── SUPERVISION SLIDE ─── */
+.supervision-layout {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 1.2rem;
+  max-width: 780px;
+}
+.supervision-photo {
+  width: 140px; height: 140px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+.supervision-asks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  max-width: 780px;
+}
+.ask-col { padding: 1rem 1.2rem; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); }
+.ask-col h4 { font-family: var(--display); font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 0.6rem; }
+.ask-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+.ask-col ul li { font-size: 0.78rem; color: var(--mid); padding-left: 0.8rem; position: relative; }
+.ask-col ul li::before { content: '—'; position: absolute; left: 0; color: var(--muted); }
+
+/* ─── SPONSOR TABLE ─── */
+.sponsor-table { margin-top: 1.4rem; max-width: 860px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.s-row { display: grid; grid-template-columns: 1.2fr 1.5fr 1.5fr; border-bottom: 1px solid var(--border); }
+.s-row:last-child { border-bottom: none; }
+.s-row.head .s-cell { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+.s-row.highlight { background: rgba(37,99,235,0.03); }
+.s-cell { padding: 0.8rem 1rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.5rem; }
+.co-name { font-family: var(--display); font-weight: 600; font-size: 0.88rem; }
+.s-badge { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.06em; padding: 0.15rem 0.45rem; border-radius: 3px; border: 1px solid; }
+.s-badge.plan-a { color: var(--blue); border-color: rgba(37,99,235,0.4); }
+.s-badge.open   { color: var(--teal); border-color: rgba(8,145,178,0.35); }
+.s-badge.maybe  { color: var(--muted); border-color: var(--border); }
+
+/* ─── PLAN CARDS ─── */
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.4rem; max-width: 960px; }
+.plan-card { border: 1px solid var(--border); padding: 1.2rem 1.2rem; border-radius: 4px; background: var(--bg); }
+.plan-card.primary { border-color: var(--blue); background: rgba(37,99,235,0.04); }
+.plan-tag { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.plan-card.primary .plan-tag { color: var(--blue); }
+.plan-name { font-family: var(--display); font-weight: 700; font-size: 1.2rem; color: var(--text); margin: 0.35rem 0 0.7rem; }
+.plan-body { font-size: 0.8rem; color: var(--mid); line-height: 1.6; }
+.const-box {
+  border-left: 3px solid var(--coral);
+  background: rgba(229,91,77,0.04);
+  padding: 1rem 1.2rem;
+  max-width: 960px;
+  margin-top: 1rem;
+  border-radius: 0 4px 4px 0;
+}
+.const-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral); margin-bottom: 0.4rem; }
+.const-body { font-family: var(--display); font-size: 0.92rem; font-weight: 600; color: var(--text); }
+
+/* ─── IDEAS BENTO ─── */
+.ideas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 1.4rem;
+  max-width: 860px;
+}
+.idea-card {
+  background: var(--white);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  position: relative;
+}
+.idea-card:hover { background: var(--bg); }
+.idea-card.wide { grid-column: 1 / -1; }
+.idea-tag {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.5rem;
+  border-radius: 3px;
+  border: 1px solid;
+  width: fit-content;
+}
+.tag-ai    { color: var(--teal);  border-color: rgba(8,145,178,0.35);  background: rgba(8,145,178,0.06); }
+.tag-hw    { color: var(--coral); border-color: rgba(229,91,77,0.35);  background: rgba(229,91,77,0.06); }
+.tag-med   { color: var(--green); border-color: rgba(5,150,105,0.35);  background: rgba(5,150,105,0.06); }
+.idea-title { font-family: var(--display); font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.idea-desc  { font-size: 0.76rem; color: var(--mid); line-height: 1.5; }
+.idea-explore {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--blue);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: gap 0.2s;
+  padding-top: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.idea-card:hover .idea-explore { gap: 0.55rem; }
+
+/* ─── TIMELINE ─── */
+.timeline { margin-top: 1.4rem; max-width: 780px; }
+.t-row { display: grid; grid-template-columns: 110px 1fr; gap: 1.2rem; padding: 0.8rem 0; border-top: 1px solid var(--border); align-items: start; }
+.t-row:first-child { border-top: none; }
+.t-date { font-family: var(--mono); font-size: 0.72rem; color: var(--blue); padding-top: 0.1rem; }
+.t-label { font-size: 0.84rem; color: var(--mid); line-height: 1.5; }
+
+/* ─── ASK GRID ─── */
+.ask-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem 2rem; margin-top: 1.4rem; max-width: 860px; }
+.ask-item { border-left: 2px solid var(--blue); padding-left: 1rem; }
+.ask-item h3 { font-family: var(--display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
+.ask-item p  { font-size: 0.8rem; color: var(--mid); line-height: 1.55; }
+
+/* ─── MODAL OVERLAY ─── */
+#modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(15,35,81,0.6);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+#modal-overlay.open { opacity: 1; pointer-events: auto; }
+#modal-box {
+  background: var(--white);
+  width: min(92vw, 860px);
+  max-height: 88vh;
+  border-radius: 6px;
+  overflow-y: auto;
+  transform: translateY(20px);
+  transition: transform 0.35s ease;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+}
+#modal-overlay.open #modal-box { transform: translateY(0); }
+
+.modal-header {
+  background: var(--navy);
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky; top: 0; z-index: 5;
+}
+.modal-back {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.6);
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  text-transform: uppercase;
+}
+.modal-back:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+.modal-id {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+}
+.modal-body { padding: 2rem 2.4rem 2.4rem; }
+.modal-title { font-family: var(--display); font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; color: var(--text); margin-bottom: 0.8rem; }
+.modal-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+.modal-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 0.22rem 0.55rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--mid);
+  background: var(--bg);
+}
+.modal-visual {
+  width: 100%;
+  aspect-ratio: 16/6;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.6rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.modal-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; margin-bottom: 1.4rem; }
+.modal-col h4 { font-family: var(--display); font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+.modal-col p  { font-size: 0.8rem; color: var(--mid); line-height: 1.65; }
+.modal-extra { margin-top: 0.8rem; padding: 1rem 1.2rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; }
+.modal-extra h4 { font-family: var(--display); font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 0.7rem; }
+.extra-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.extra-pill {
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.3rem 0.7rem;
+  color: var(--mid);
+  background: var(--white);
+}
+
+/* ─── NAV ─── */
+#prev-btn, #next-btn {
+  position: fixed; top: 50%; z-index: 50;
+  transform: translateY(-50%);
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.7);
+  font-family: var(--mono); font-size: 1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+#prev-btn:hover, #next-btn:hover { border-color: rgba(255,255,255,0.5); color: white; }
+#prev-btn { left: 16px; } #next-btn { right: 16px; }
+#prev-btn.hide, #next-btn.hide { opacity: 0; pointer-events: none; }
+
+#dot-nav {
+  position: fixed; bottom: 20px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 8px; z-index: 50;
+}
+.dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.dot.active { background: rgba(255,255,255,0.9); width: 20px; border-radius: 3px; }
+
+#slide-counter {
+  position: fixed; top: 20px; right: 24px;
+  font-family: var(--mono); font-size: 0.65rem;
+  color: rgba(255,255,255,0.35); letter-spacing: 0.1em;
+  z-index: 50;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  :root { --panel-w: 0px; }
+  .left-panel { display: none; }
+  .right-panel { padding: 3vh 5vw; }
+  h1 { font-size: 1.9rem; }
+  h2 { font-size: 1.5rem; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .plans { grid-template-columns: 1fr; }
+  .ideas-grid { grid-template-columns: 1fr; }
+  .idea-card.wide { grid-column: 1; }
+  .ask-grid { grid-template-columns: 1fr; }
+  .modal-cols { grid-template-columns: 1fr; }
+  .supervision-layout { grid-template-columns: 1fr; }
+  .supervision-asks { grid-template-columns: 1fr; }
+  .s-row { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
 
-<div id="deck"></div>
+<div id="deck-shell"></div>
 
-<button class="navbtn" id="prev" aria-label="Previous slide">&#8592;</button>
-<button class="navbtn" id="next" aria-label="Next slide">&#8594;</button>
-<div id="hud"></div>
-<div id="idx"></div>
+<!-- NAV -->
+<button id="prev-btn" aria-label="Previous slide">&#8592;</button>
+<button id="next-btn" aria-label="Next slide">&#8594;</button>
+<div id="dot-nav"></div>
+<div id="slide-counter"></div>
+
+<!-- MODAL OVERLAY -->
+<div id="modal-overlay" role="dialog" aria-modal="true" aria-label="Idea detail">
+  <div id="modal-box"></div>
+</div>
 
 <script>
-const slides = [
+// ─── DATA ───────────────────────────────────────────────
 
-// 1 — Hero
-`<div class="eyebrow">Graduation Project Pitch</div>
-<h1>Six students.<br><span class="accent-c">One</span> project<br>fully planned<span class="accent">.</span></h1>
-<p class="lede">A walkthrough of our team, our sponsorship options, and the plan we've built for each possible path — Plan A, B, and C.</p>`,
-
-// 2 — Team intro
-`<div class="eyebrow">01 — The Team</div>
-<h2>Who's building this</h2>
-<p class="lede">Three disciplines, one team — enough range to cover engineering, security, and process.</p>
-<div class="grid-team">
-  <div class="member"><div class="m-name">Ahmed Morsy</div><span class="m-major tag-cs">Computer Science</span></div>
-  <div class="member"><div class="m-name">Omar Hossam</div><span class="m-major tag-cs">Computer Science</span></div>
-  <div class="member"><div class="m-name">Abdullah Ashraf</div><span class="m-major tag-cs">Computer Science</span></div>
-  <div class="member"><div class="m-name">Ahmed Ehab</div><span class="m-major tag-cyber">Cybersecurity</span></div>
-  <div class="member"><div class="m-name">Mark Hany</div><span class="m-major tag-cyber">Cybersecurity</span></div>
-  <div class="member"><div class="m-name">Mahmoud Samer</div><span class="m-major tag-se">Software Engineering</span></div>
-</div>`,
-
-// 3 — Why him
-`<div class="eyebrow">02 — Academic Supervision</div>
-<h2>Working with <span class="accent-c">Dr. Mahmoud Shawky</span></h2>
-<p class="lede placeholder">[Add 2–3 lines here: his relevant expertise, courses he's taught you, or past graduation projects he's supervised.]</p>
-<div class="divider"></div>
-<p class="lede">Whichever company ends up sponsoring the technical side, the academic backbone — research rigor, methodology, and the final paper — stays under his supervision.</p>`,
-
-// 4 — Sponsorship landscape
-`<div class="eyebrow">03 — Sponsorship Landscape</div>
-<h2>Who could fund this</h2>
-<p class="lede">One path hands us the idea. The rest ask us to bring our own.</p>
-<div class="table-wrap">
-  <div class="trow head">
-    <div class="tcell">Company</div>
-    <div class="tcell">What they give</div>
-    <div class="tcell">What's needed from us</div>
-  </div>
-  <div class="trow">
-    <div class="tcell"><span class="co-name">Siemens</span><span class="badge badge-select">Selection process</span></div>
-    <div class="tcell">Full project idea + full technical support</div>
-    <div class="tcell">Pass their team interview</div>
-  </div>
-  <div class="trow">
-    <div class="tcell"><span class="co-name">Ejada</span><span class="badge badge-open">Open</span></div>
-    <div class="tcell">Sponsorship</div>
-    <div class="tcell">We bring our own idea</div>
-  </div>
-  <div class="trow">
-    <div class="tcell"><span class="co-name">RAYA Tech</span><span class="badge badge-open">Open</span></div>
-    <div class="tcell">Sponsorship</div>
-    <div class="tcell">We bring our own idea</div>
-  </div>
-  <div class="trow">
-    <div class="tcell"><span class="co-name">Microsoft</span><span class="badge badge-open">Open</span></div>
-    <div class="tcell">Sponsorship</div>
-    <div class="tcell">We bring our own idea</div>
-  </div>
-  <div class="trow">
-    <div class="tcell"><span class="co-name">Synapse</span><span class="badge badge-open">Possible</span></div>
-    <div class="tcell">Sponsorship</div>
-    <div class="tcell">We bring our own idea</div>
-  </div>
-</div>`,
-
-// 5 — Plans A/B/C
-`<div class="eyebrow">04 — Our Plan</div>
-<h2>Three paths, one outcome</h2>
-<p class="lede">We're not betting everything on one company saying yes.</p>
-<div class="plans">
-  <div class="plan-card primary">
-    <div class="plan-tag">Plan A — Preferred</div>
-    <div class="plan-name">Siemens Track</div>
-    <div class="plan-body">Pass the Siemens interviews as a team. If accepted, we get the project idea and full technical support — working under Siemens as industry mentor and Dr. Shawky as academic supervisor.</div>
-  </div>
-  <div class="plan-card">
-    <div class="plan-tag">Plan B — Fallback</div>
-    <div class="plan-name">Own Idea + Sponsor</div>
-    <div class="plan-body">We brainstorm an original idea and pitch it for sponsorship from Ejada, RAYA Tech, Microsoft, or Synapse.</div>
-  </div>
-  <div class="plan-card">
-    <div class="plan-tag">Plan C — Backup</div>
-    <div class="plan-name">Independent</div>
-    <div class="plan-body">If no sponsorship comes through, we execute our own idea independently, self-directed and self-resourced.</div>
-  </div>
-</div>`,
-
-// 6 — Constant thread
-`<div class="eyebrow">05 — What Doesn't Change</div>
-<h2>One constant across every path</h2>
-<div class="pipeline">
-  <div class="pipe-node"><div class="pipe-tag">Plan A</div><div class="pipe-title">Siemens</div><div class="pipe-desc">Idea + full support</div></div>
-  <div class="pipe-node"><div class="pipe-tag">Plan B</div><div class="pipe-title">Own idea</div><div class="pipe-desc">Sponsor from Ejada / RAYA / Microsoft / Synapse</div></div>
-  <div class="pipe-node"><div class="pipe-tag">Plan C</div><div class="pipe-title">Independent</div><div class="pipe-desc">Self-driven execution</div></div>
-</div>
-<div class="const-box">
-  <div class="const-label">Constant</div>
-  <div style="font-family:var(--display); font-weight:600; font-size:1.15rem;">A full research paper on the project, under Dr. Mahmoud Shawky's supervision — regardless of which plan we end up on.</div>
-</div>`,
-
-// 7 — Timeline
-`<div class="eyebrow">06 — Timeline</div>
-<h2>Where each milestone lands</h2>
-<div class="timeline">
-  <div class="t-item"><div class="t-date placeholder">[date]</div><div class="t-what">Siemens interview / selection round</div></div>
-  <div class="t-item"><div class="t-date placeholder">[date]</div><div class="t-what">Decision deadline — fall back to Plan B if not selected</div></div>
-  <div class="t-item"><div class="t-date placeholder">[date]</div><div class="t-what">Own-idea brainstorm finalized (Plan B trigger point)</div></div>
-  <div class="t-item"><div class="t-date placeholder">[date]</div><div class="t-what">Sponsor outreach to Ejada / RAYA / Microsoft / Synapse</div></div>
-  <div class="t-item"><div class="t-date placeholder">[date]</div><div class="t-what">Research paper milestones begin under supervision</div></div>
-</div>`,
-
-// 8 — Next Steps
-`<div class="eyebrow">07 — Next Steps</div>
-<h2>Where this stands</h2>
-<div class="ask-grid">
-  <div class="ask-item">
-    <h3>Supervision</h3>
-    <p>Academic supervision covers the technical direction and the research paper, across all three plans.</p>
-  </div>
-  <div class="ask-item">
-    <h3>Decision window</h3>
-    <p class="placeholder">[Date] — Plan B moves forward in time if Siemens doesn't come through.</p>
-  </div>
-  <div class="ask-item">
-    <h3>Direction flexibility</h3>
-    <p>The exact project may shift depending on which plan we land on — the plan itself doesn't.</p>
-  </div>
-  <div class="ask-item">
-    <h3>Contact</h3>
-    <p class="placeholder">[Team email / phone]</p>
-  </div>
-</div>
-<div class="divider"></div>
-<p class="lede">Happy to answer any questions.</p>`
+const TEAM = [
+  {
+    name: 'Omar Hossam',
+    major: 'Computer Science', badge: 'badge-cs',
+    role: 'AI systems, DevOps, project architecture',
+    photo: 'profiles/New folder/1750706771449.jpg',
+    github: 'https://github.com/4awmy',
+    linkedin: 'https://www.linkedin.com/in/omar-hossam-4awmy/',
+    highlight: 'ClassroomX — best-project award',
+    highlightLink: 'https://classroomx-lkbxf.ondigitalocean.app/showcase'
+  },
+  {
+    name: 'Ahmed Morsy',
+    major: 'Computer Science', badge: 'badge-cs',
+    role: 'Backend systems & API design',
+    photo: 'profiles/New folder (2)/1730690692034.jpg',
+    github: 'https://github.com/AHMED-MORSI28',
+    linkedin: 'https://www.linkedin.com/in/ahmedmorsi0/'
+  },
+  {
+    name: 'Abdullah Ashraf',
+    major: 'Computer Science', badge: 'badge-cs',
+    role: 'Frontend & full-stack development',
+    photo: 'profiles/New folder (3)/1778689774247.png',
+    github: 'https://github.com/0Abdullah0Ashraf0',
+    linkedin: 'https://www.linkedin.com/in/abdullah-ashraf-767b112ba/'
+  },
+  {
+    name: 'Mark Hany',
+    major: 'Cybersecurity', badge: 'badge-cyber',
+    role: 'Security analysis & penetration testing',
+    photo: 'profiles/New folder (4)/1749574115974.jpg',
+    github: null,
+    linkedin: 'https://www.linkedin.com/in/mark-h-morris-03238133b/'
+  },
+  {
+    name: 'Ahmed Ehab',
+    major: 'Cybersecurity', badge: 'badge-cyber',
+    role: 'Network security & threat modeling',
+    photo: 'profiles/New folder (5)/1747427305480.jpeg',
+    github: 'https://github.com/Ahmed0Ehab2405',
+    linkedin: 'https://www.linkedin.com/in/ahmedehab2405/'
+  },
+  {
+    name: 'Mahmoud Samer',
+    major: 'Software Engineering', badge: 'badge-se',
+    role: 'Software architecture & testing',
+    photo: 'https://avatars.githubusercontent.com/u/163532044?v=4',
+    github: 'https://github.com/MahmoudSamerAli',
+    linkedin: 'https://www.linkedin.com/in/mahmoud-samer/'
+  }
 ];
 
-const deck = document.getElementById('deck');
-const hud = document.getElementById('hud');
-const idxEl = document.getElementById('idx');
+const IDEAS = [
+  {
+    id: 'D1',
+    title: 'Local AI Agent for SMBs',
+    desc: 'An on-premise LLM agent that automates onboarding, internal Q&A, and process management for small businesses — no cloud dependency.',
+    tags: ['AI', 'Enterprise', 'Python', 'LangChain', 'Ollama'],
+    domainTag: 'tag-ai', domainLabel: 'AI · ENTERPRISE',
+    problem: 'Small businesses can\'t afford enterprise AI tooling. Cloud-based LLMs leak proprietary data and have recurring costs that don\'t scale with small teams.',
+    build: 'A locally-running AI agent the business owner talks to. Handles onboarding flows, policy questions, and internal search — all on their own hardware.',
+    how: 'Ollama + LangChain running on commodity hardware. RAG pipeline over company documents. FastAPI backend, React chat interface.',
+    research: 'Benchmarking local vs. cloud LLM performance on domain-specific SMB tasks. Evaluating privacy-preserving inference architectures.',
+    extra: {
+      label: 'Deployment Tiers',
+      pills: ['Raspberry Pi 5 (lite)', 'Mid-range workstation (standard)', 'On-prem GPU server (enterprise)']
+    }
+  },
+  {
+    id: 'D2',
+    title: 'Sign Language Glove',
+    desc: 'A sensor-equipped glove that recognizes Arabic Sign Language gestures in real time and converts them to speech and text.',
+    tags: ['Hardware', 'ML', 'Arduino', 'TensorFlow Lite', 'Accessibility'],
+    domainTag: 'tag-hw', domainLabel: 'HARDWARE · ACCESSIBILITY',
+    problem: 'The deaf and hard-of-hearing community in Egypt face near-total communication barriers with hearing individuals in everyday settings.',
+    build: 'A wearable glove with flex sensors and IMU. Real-time gesture classification model outputs speech via a paired smartphone app.',
+    how: 'Flex sensors + MPU6050 on Arduino. TensorFlow Lite model trained on Arabic Sign Language dataset. BLE connection to React Native app.',
+    research: 'Contribution to the EALS (Egyptian Arabic Language Signs) open dataset. Accuracy benchmarking for real-time embedded inference.',
+    extra: {
+      label: 'Social Impact',
+      pills: ['EALS dataset contribution', 'Arabic-first accessibility', 'Hospital & school pilot candidate']
+    }
+  },
+  {
+    id: 'D3',
+    title: 'University RAG Chatbot',
+    desc: 'A retrieval-augmented generation chatbot trained on AAST\'s internal documents — schedules, regulations, course content — deployed locally.',
+    tags: ['AI', 'RAG', 'Education', 'LangChain', 'ChromaDB'],
+    domainTag: 'tag-ai', domainLabel: 'AI · EDUCATION',
+    problem: 'Students waste hours navigating scattered university portals, PDFs, and unofficial Telegram groups to find basic information.',
+    build: 'A chat interface that answers questions about course registration, exam schedules, regulations, and faculty contacts — all from authoritative university documents.',
+    how: 'LangChain RAG pipeline. ChromaDB vector store. University documents ingested and chunked. GPT-4o-mini or local Mistral inference.',
+    research: 'Evaluating RAG hallucination rates on institutional documents. Measuring student satisfaction vs. traditional portal lookup.',
+    extra: {
+      label: 'Why the University Benefits',
+      pills: ['Zero data leaves campus', 'Reduces admin support load', 'Deployable on university servers']
+    }
+  },
+  {
+    id: 'D4',
+    title: 'AI Immune System',
+    desc: 'A computer vision system that classifies white blood cell types from microscope images to assist early disease detection.',
+    tags: ['Medical AI', 'Computer Vision', 'YOLOv8', 'Python'],
+    domainTag: 'tag-med', domainLabel: 'AI · MEDICAL',
+    problem: 'Manual WBC differential counting is slow, expensive, and error-prone. Access to specialist haematologists is limited in Egypt.',
+    build: 'Upload a microscope slide image. The system detects, counts, and classifies all WBC types and outputs a structured differential report.',
+    how: 'YOLOv8 fine-tuned on the LISC and CellaVision datasets. FastAPI backend. React dashboard for clinicians.',
+    research: 'Accuracy benchmarking vs. Coulter counters on Egyptian hospital samples. Partnership with a Cairo teaching hospital for data collection.',
+    extra: {
+      label: 'Data Strategy',
+      pills: ['LISC open dataset', 'CellaVision benchmark', 'Hospital partnership for local samples']
+    }
+  },
+  {
+    id: 'D5',
+    title: 'StudyX',
+    desc: 'An AI-powered study assistant that turns lecture materials into adaptive quizzes, flashcard sets, and exam simulators for university students.',
+    tags: ['EdTech', 'AI', 'React', 'OpenAI', 'Education'],
+    domainTag: 'tag-ai', domainLabel: 'AI · EDTECH',
+    problem: 'Students have access to more material than ever but lack structured tools to retain it. Passive reading produces poor exam performance.',
+    build: 'Upload a PDF or paste notes. StudyX generates a smart quiz, Anki-style flashcards, and a timed exam simulation — all calibrated to the source material.',
+    how: 'OpenAI API for content generation. Spaced repetition algorithm for flashcard scheduling. React + Supabase. Planned mobile app.',
+    research: 'Comparing StudyX-assisted retention vs. control group using standard university exams. Publishable as an EdTech intervention study.',
+    extra: {
+      label: 'Why Not Just Use ChatGPT?',
+      pills: ['Source-grounded (no hallucination)', 'Spaced repetition built in', 'Exam-format aware', 'Works on Arabic content']
+    }
+  }
+];
+
+// ─── SLIDE TEMPLATES ────────────────────────────────────
+
+function leftPanel(num, label, sublabel = '') {
+  return `<div class="left-panel">
+    <div class="panel-label">
+      GRADUATION PROJECT<br>PITCH DECK 2026
+      ${sublabel ? `<span>${sublabel}</span>` : ''}
+    </div>
+    <div class="ghost-num">${num}</div>
+  </div>`;
+}
+
+const SLIDES = [
+
+// ── SLIDE 1: HERO ──────────────────────────────────────
+`<div class="slide active hero-slide" id="slide-0">
+  ${leftPanel('', '')}
+  <div class="right-panel">
+    <div class="eyebrow" style="color:rgba(255,255,255,0.45); --tw:rgba(255,255,255,0.45)">
+      <span style="display:inline-block;width:20px;height:1px;background:rgba(255,255,255,0.3)"></span>
+      AAST — Arab Academy for Science & Technology
+    </div>
+    <h1>Five ideas.<br><span style="color:rgba(37,99,235,0.9)">Three paths.</span><br>One professor.</h1>
+    <p class="lede white">A six-person graduation team with a structured plan for every outcome — Plan A, B, and C — and five AI project concepts ready to build.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">Computer Science</span>
+      <span class="hero-pill">Cybersecurity</span>
+      <span class="hero-pill">Software Engineering</span>
+      <span class="hero-pill">Academic Year 2026–2027</span>
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 2: AGENDA ────────────────────────────────────
+`<div class="slide" id="slide-1">
+  ${leftPanel('02', '')}
+  <div class="right-panel">
+    <div class="eyebrow">Agenda</div>
+    <h2>What this covers</h2>
+    <div class="agenda-list">
+      <div class="agenda-item"><span class="agenda-num">01</span><div class="agenda-text"><h3>The Team</h3><p>Six members across three disciplines</p></div></div>
+      <div class="agenda-item"><span class="agenda-num">02</span><div class="agenda-text"><h3>Academic Supervision</h3><p>Dr. Mahmoud Shawky — credentials and what we're asking for</p></div></div>
+      <div class="agenda-item"><span class="agenda-num">03</span><div class="agenda-text"><h3>Sponsorship Landscape</h3><p>Five companies, one selection process, three possible paths</p></div></div>
+      <div class="agenda-item"><span class="agenda-num">04</span><div class="agenda-text"><h3>Our Plan</h3><p>Plan A, B, and C — and what stays constant across all three</p></div></div>
+      <div class="agenda-item"><span class="agenda-num">05</span><div class="agenda-text"><h3>Project Ideas</h3><p>Five AI concepts — any one of them is buildable and publishable</p></div></div>
+      <div class="agenda-item"><span class="agenda-num">06</span><div class="agenda-text"><h3>Timeline &amp; Next Steps</h3><p>Milestones, decision windows, and our ask</p></div></div>
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 3: TEAM ──────────────────────────────────────
+`<div class="slide" id="slide-2">
+  ${leftPanel('03', '')}
+  <div class="right-panel">
+    <div class="eyebrow">01 — The Team</div>
+    <h2>Six people. Three disciplines.</h2>
+    <div class="team-grid">
+      ${TEAM.map(m => `
+        <div class="member-card">
+          <img class="member-avatar" src="${m.photo}" alt="${m.name}" onerror="this.src='https://avatars.githubusercontent.com/u/0?v=4'; this.style.background='var(--bg)'">
+          <div>
+            <div class="member-name">${m.name}</div>
+            <span class="badge ${m.badge}">${m.major}</span>
+          </div>
+          <div class="member-role">${m.role}</div>
+          ${m.highlight ? `<a href="${m.highlightLink || '#'}" target="_blank" class="badge-highlight">★ ${m.highlight}</a>` : ''}
+          <div class="member-links">
+            ${m.linkedin ? `<a href="${m.linkedin}" target="_blank">LI</a>` : ''}
+            ${m.github   ? `<a href="${m.github}"   target="_blank">GH</a>` : ''}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 4: SUPERVISION ───────────────────────────────
+`<div class="slide" id="slide-3">
+  ${leftPanel('04', '')}
+  <div class="right-panel">
+    <div class="eyebrow">02 — Academic Supervision</div>
+    <h2>Working with Dr. Mahmoud Shawky</h2>
+    <div class="supervision-layout">
+      <img class="supervision-photo" src="profiles/Shaekky/1774474532696.png" alt="Dr. Mahmoud Shawky">
+      <div>
+        <p style="font-family:var(--display);font-weight:600;font-size:0.88rem;color:var(--text)">Dr. Mahmoud A. Shawky</p>
+        <p style="font-size:0.75rem;color:var(--blue);font-family:var(--mono);letter-spacing:0.05em;margin:0.2rem 0 0.6rem">
+          Lecturer · AAST &amp; GIU Cairo | PhD · University of Glasgow | Executive Fellow · University of Essex
+        </p>
+        <p style="font-size:0.78rem;color:var(--mid);line-height:1.6;max-width:48ch">
+          Over 50 peer-reviewed publications in cryptography, wireless authentication, and physical layer security — 
+          featured in Nature Communications Engineering and IEEE Transactions. 
+          Has supervised multiple AAST graduation projects through to defense and publication.
+        </p>
+        <p style="font-size:0.72rem;color:var(--muted);font-family:var(--mono);margin-top:0.5rem">
+          Associate Editor · Springer Nature Scientific Reports
+        </p>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="supervision-asks">
+      <div class="ask-col">
+        <h4>What we're asking for</h4>
+        <ul>
+          <li>Monthly check-ins (~30 min)</li>
+          <li>Research methodology guidance</li>
+          <li>Paper co-authorship and review</li>
+          <li>Academic endorsement for sponsorship</li>
+        </ul>
+      </div>
+      <div class="ask-col">
+        <h4>What stays constant regardless</h4>
+        <ul>
+          <li>Full research paper under your supervision</li>
+          <li>Your name on the published work</li>
+          <li>We adapt to your schedule</li>
+          <li>No extra administrative overhead</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 5: SPONSORSHIP ───────────────────────────────
+`<div class="slide" id="slide-4">
+  ${leftPanel('05', '')}
+  <div class="right-panel">
+    <div class="eyebrow">03 — Sponsorship Landscape</div>
+    <h2>Who could fund this</h2>
+    <p class="lede">One path hands us the idea. The rest ask us to bring our own.</p>
+    <div class="sponsor-table">
+      <div class="s-row head">
+        <div class="s-cell">Company</div>
+        <div class="s-cell">What they give</div>
+        <div class="s-cell">What's needed from us</div>
+      </div>
+      <div class="s-row highlight">
+        <div class="s-cell"><span class="co-name">Siemens</span><span class="s-badge plan-a">PLAN A</span></div>
+        <div class="s-cell" style="color:var(--text)">Full project idea + technical mentorship + industry validation</div>
+        <div class="s-cell">Pass their team interview &amp; selection round</div>
+      </div>
+      <div class="s-row">
+        <div class="s-cell"><span class="co-name">Ejada</span><span class="s-badge open">Open</span></div>
+        <div class="s-cell">Sponsorship + domain expertise</div>
+        <div class="s-cell">We pitch our own idea</div>
+      </div>
+      <div class="s-row">
+        <div class="s-cell"><span class="co-name">RAYA Tech</span><span class="s-badge open">Open</span></div>
+        <div class="s-cell">Sponsorship</div>
+        <div class="s-cell">We pitch our own idea</div>
+      </div>
+      <div class="s-row">
+        <div class="s-cell"><span class="co-name">Microsoft</span><span class="s-badge open">Open</span></div>
+        <div class="s-cell">Azure credits + sponsorship</div>
+        <div class="s-cell">We pitch our own idea</div>
+      </div>
+      <div class="s-row">
+        <div class="s-cell"><span class="co-name">Synapse Analytics</span><span class="s-badge maybe">Possible</span></div>
+        <div class="s-cell">Data infrastructure support</div>
+        <div class="s-cell">We pitch our own idea</div>
+      </div>
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 6: PLANS ─────────────────────────────────────
+`<div class="slide" id="slide-5">
+  ${leftPanel('06', '')}
+  <div class="right-panel">
+    <div class="eyebrow">04 — Our Plan</div>
+    <h2>Three paths, one outcome</h2>
+    <p class="lede">We're not betting everything on one company saying yes.</p>
+    <div class="plans">
+      <div class="plan-card primary">
+        <div class="plan-tag">Plan A — Preferred</div>
+        <div class="plan-name">Siemens Track</div>
+        <div class="plan-body">Pass the Siemens team interview. If accepted, we get the project idea and full technical support — working under Siemens as industry mentor and Dr. Shawky as academic supervisor.</div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-tag">Plan B — Fallback</div>
+        <div class="plan-name">Own Idea + Sponsor</div>
+        <div class="plan-body">We pitch one of our five concepts to Ejada, RAYA Tech, Microsoft, or Synapse Analytics for sponsorship. We own the IP, they fund the build.</div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-tag">Plan C — Backup</div>
+        <div class="plan-name">Independent</div>
+        <div class="plan-body">If no sponsorship comes through, we self-fund and execute one of our five ideas independently, with Dr. Shawky's academic supervision intact.</div>
+      </div>
+    </div>
+    <div class="const-box">
+      <div class="const-label">Constant — Regardless of Plan</div>
+      <div class="const-body">A full research paper on the project, under Dr. Mahmoud Shawky's supervision — published regardless of which plan we end up on.</div>
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 7: IDEAS ─────────────────────────────────────
+`<div class="slide" id="slide-6">
+  ${leftPanel('07', '')}
+  <div class="right-panel">
+    <div class="eyebrow">05 — Project Ideas</div>
+    <h2>Five concepts. Any one is buildable.</h2>
+    <div class="ideas-grid">
+      ${IDEAS.map((idea, i) => `
+        <div class="idea-card${i === 4 ? ' wide' : ''}" onclick="openModal(${i})" tabindex="0" role="button" aria-label="Explore ${idea.title}">
+          <span class="idea-tag ${idea.domainTag}">${idea.domainLabel}</span>
+          <div class="idea-title">${idea.title}</div>
+          <div class="idea-desc">${idea.desc}</div>
+          <button class="idea-explore" onclick="openModal(${i}); event.stopPropagation()">Explore <span>→</span></button>
+        </div>`).join('')}
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 8: TIMELINE ──────────────────────────────────
+`<div class="slide" id="slide-7">
+  ${leftPanel('08', '')}
+  <div class="right-panel">
+    <div class="eyebrow">06 — Timeline</div>
+    <h2>Where each milestone lands</h2>
+    <div class="timeline">
+      <div class="t-row"><div class="t-date placeholder">[date]</div><div class="t-label">Siemens interview / selection round</div></div>
+      <div class="t-row"><div class="t-date placeholder">[date]</div><div class="t-label">Decision deadline — fall back to Plan B if not selected</div></div>
+      <div class="t-row"><div class="t-date placeholder">[date]</div><div class="t-label">Project idea locked — one of five confirmed</div></div>
+      <div class="t-row"><div class="t-date placeholder">[date]</div><div class="t-label">Sponsor outreach begins (Ejada / RAYA / Microsoft / Synapse)</div></div>
+      <div class="t-row"><div class="t-date placeholder">[date]</div><div class="t-label">Research methodology agreed with Dr. Shawky</div></div>
+      <div class="t-row"><div class="t-date placeholder">[date]</div><div class="t-label">First working prototype / MVP delivered</div></div>
+      <div class="t-row"><div class="t-date placeholder">[date]</div><div class="t-label">Final paper submission + project defense</div></div>
+    </div>
+  </div>
+</div>`,
+
+// ── SLIDE 9: NEXT STEPS ────────────────────────────────
+`<div class="slide" id="slide-8">
+  ${leftPanel('09', '')}
+  <div class="right-panel">
+    <div class="eyebrow">07 — Next Steps</div>
+    <h2>What we're asking for</h2>
+    <div class="ask-grid">
+      <div class="ask-item">
+        <h3>Our ask</h3>
+        <p>Monthly supervision (~30 min), methodology review, paper co-authorship. No heavy overhead — we adapt to your schedule.</p>
+      </div>
+      <div class="ask-item">
+        <h3>Decision window</h3>
+        <p class="placeholder">[date] — if Siemens doesn't come through, we move to Plan B immediately. No waiting.</p>
+      </div>
+      <div class="ask-item">
+        <h3>Idea direction</h3>
+        <p>We have five concepts ready. Open to your input on research fit — whichever aligns best with your areas makes the strongest paper.</p>
+      </div>
+      <div class="ask-item">
+        <h3>Contact</h3>
+        <p>
+          <a href="https://github.com/4awmy" target="_blank" style="color:var(--blue);text-decoration:none">github.com/4awmy</a><br>
+          <a href="https://www.linkedin.com/in/omar-hossam-4awmy/" target="_blank" style="color:var(--blue);text-decoration:none">linkedin.com/in/omar-hossam-4awmy</a>
+        </p>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <p class="lede" style="font-family:var(--display);font-weight:600;color:var(--text);margin-top:0">Happy to answer any questions.</p>
+  </div>
+</div>`
+
+];
+
+// ─── BUILD DECK ─────────────────────────────────────────
+const shell = document.getElementById('deck-shell');
+const dotNav = document.getElementById('dot-nav');
+const counter = document.getElementById('slide-counter');
 let current = 0;
 
-slides.forEach((html, i) => {
-  const s = document.createElement('div');
-  s.className = 'slide';
-  s.innerHTML = html;
-  deck.appendChild(s);
-  const d = document.createElement('div');
-  d.className = 'dot';
-  d.setAttribute('role','button');
-  d.setAttribute('tabindex','0');
-  d.addEventListener('click', () => go(i));
-  hud.appendChild(d);
+SLIDES.forEach((html, i) => {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  const slide = wrapper.firstElementChild;
+  slide.classList.remove('active');
+  shell.appendChild(slide);
+
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.setAttribute('aria-label', `Slide ${i + 1}`);
+  dot.addEventListener('click', () => go(i));
+  dotNav.appendChild(dot);
 });
 
 const slideEls = document.querySelectorAll('.slide');
 const dotEls = document.querySelectorAll('.dot');
 
-function go(i){
-  if(i < 0 || i >= slides.length) return;
+function go(i) {
+  if (i < 0 || i >= SLIDES.length) return;
   slideEls[current].classList.remove('active');
-  dotEls[current].classList.remove('on');
+  dotEls[current].classList.remove('active');
   current = i;
   slideEls[current].classList.add('active');
-  dotEls[current].classList.add('on');
-  idxEl.textContent = String(current+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
-  document.getElementById('prev').classList.toggle('hidden', current === 0);
-  document.getElementById('next').classList.toggle('hidden', current === slides.length - 1);
+  dotEls[current].classList.add('active');
+  counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(SLIDES.length).padStart(2,'0')}`;
+  document.getElementById('prev-btn').classList.toggle('hide', current === 0);
+  document.getElementById('next-btn').classList.toggle('hide', current === SLIDES.length - 1);
 }
 
-document.getElementById('prev').addEventListener('click', () => go(current - 1));
-document.getElementById('next').addEventListener('click', () => go(current + 1));
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'ArrowRight' || e.key === ' ') go(current + 1);
-  if(e.key === 'ArrowLeft') go(current - 1);
+document.getElementById('prev-btn').addEventListener('click', () => go(current - 1));
+document.getElementById('next-btn').addEventListener('click', () => go(current + 1));
+document.addEventListener('keydown', e => {
+  if (document.getElementById('modal-overlay').classList.contains('open')) {
+    if (e.key === 'Escape') closeModal();
+    return;
+  }
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(current + 1); }
+  if (e.key === 'ArrowLeft') go(current - 1);
+});
+
+// Keyboard on idea cards
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.classList.contains('idea-card')) e.target.click();
 });
 
 go(0);
+
+// ─── MODAL ──────────────────────────────────────────────
+const overlay = document.getElementById('modal-overlay');
+const modalBox = document.getElementById('modal-box');
+
+function openModal(i) {
+  const idea = IDEAS[i];
+  const tagColors = { 'tag-ai': '#0891B2', 'tag-hw': '#E55B4D', 'tag-med': '#059669' };
+  modalBox.innerHTML = `
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal()">← Back to Ideas</button>
+      <span class="modal-id">${idea.id} of D5</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title">${idea.title}</div>
+      <div class="modal-tags">
+        ${idea.tags.map(t => `<span class="modal-tag">${t}</span>`).join('')}
+      </div>
+      <div class="modal-visual">[ Visual placeholder — add idea image to /assets/ideas/ ]</div>
+      <div class="modal-cols">
+        <div class="modal-col">
+          <h4>The Problem</h4>
+          <p>${idea.problem}</p>
+        </div>
+        <div class="modal-col">
+          <h4>What We Build</h4>
+          <p>${idea.build}</p>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="modal-cols">
+        <div class="modal-col">
+          <h4>How It Works</h4>
+          <p>${idea.how}</p>
+        </div>
+        <div class="modal-col">
+          <h4>Research Angle</h4>
+          <p>${idea.research}</p>
+        </div>
+      </div>
+      <div class="modal-extra">
+        <h4>${idea.extra.label}</h4>
+        <div class="extra-pills">
+          ${idea.extra.pills.map(p => `<span class="extra-pill">${p}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
 </script>
 </body>
 </html>
