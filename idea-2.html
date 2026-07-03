@@ -1,12 +1,510 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=SamiEE_Smart_Glove_Presentation.html" />
-  <title>Sign Language Glove - AAST GP 2026</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local LLM & RAG for University - Technical Deck</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --border-color: #334155;
+      --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: rgba(30, 41, 59, 0.8);
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+    .deck-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+    }
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .btn:hover:not(:disabled) {
+      background-color: var(--accent-cyan);
+      color: #000;
+      border-color: var(--accent-cyan);
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .slide-counter {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1200px;
+      height: calc(100vh - 140px);
+      max-height: 800px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateX(50px);
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 2; }
+    .slide-header {
+      margin-bottom: 1.4rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+    .slide-tag {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--accent-emerald);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.05;
+    }
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .grid-2, .grid-3, .grid-2x2 {
+      display: grid;
+      gap: 1.25rem;
+    }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2x2 { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+    .card {
+      background-color: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+    .card:hover { border-color: var(--accent-cyan); }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 0.5rem;
+    }
+    .card-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .pipeline {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .pipeline-step {
+      flex: 1;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--accent-cyan);
+      border-radius: 0.75rem;
+      padding: 1.2rem 1rem;
+      text-align: center;
+    }
+    .pipeline-step h4 { color: var(--accent-emerald); font-size: 1rem; margin-bottom: 0.4rem; }
+    .pipeline-step p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; }
+    .pipeline-arrow { color: var(--accent-cyan); font-size: 1.5rem; font-weight: bold; align-self: center; }
+    .tier-card {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      position: relative;
+    }
+    .tier-card.featured {
+      border-color: var(--accent-emerald);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.1) 0%, rgba(15, 23, 42, 0.6) 100%);
+    }
+    .tier-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--accent-emerald);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.25rem 0.75rem;
+      border-bottom-left-radius: 0.5rem;
+      text-transform: uppercase;
+    }
+    .tier-title { font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem; }
+    .tier-subtitle { font-size: 0.85rem; color: var(--accent-cyan); margin-bottom: 1rem; font-weight: 600; }
+    .tier-list {
+      list-style: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .tier-list li { position: relative; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+    .tier-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--accent-cyan); }
+    .presenter-note {
+      margin-top: 1.5rem;
+      background-color: rgba(245, 158, 11, 0.1);
+      border-left: 4px solid var(--accent-amber);
+      padding: 1rem 1.25rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .note-icon { color: var(--accent-amber); font-size: 1.25rem; line-height: 1; }
+    .note-content { font-size: 0.9rem; color: #fef3c7; line-height: 1.4; }
+    .note-title {
+      font-weight: 700;
+      color: var(--accent-amber);
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .footer {
+      text-align: center;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background-color: var(--bg-primary);
+      border-top: 1px solid var(--border-color);
+    }
+    .kbd {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.25rem;
+      padding: 0.1rem 0.4rem;
+      font-family: monospace;
+      color: var(--accent-cyan);
+      font-size: 0.75rem;
+    }
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-2x2 { grid-template-columns: 1fr; }
+      .pipeline { flex-direction: column; }
+      .pipeline-arrow { transform: rotate(90deg); }
+      .slide { padding: 1.5rem; height: calc(100vh - 120px); }
+      .slide-title { font-size: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-  <p><a href="SamiEE_Smart_Glove_Presentation.html">Open the Sami'ee brief</a></p>
+  <div class="top-bar">
+    <div class="deck-title">Local LLM & RAG for University</div>
+    <div class="nav-controls">
+      <button class="btn" id="prevBtn" onclick="changeSlide(-1)">Prev</button>
+      <div class="slide-counter" id="counter">Slide 1 of 5</div>
+      <button class="btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
+    </div>
+  </div>
+
+  <div class="viewport">
+    <div class="slide active">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 1: The Problem</div>
+          <div class="slide-title">The Knowledge Barrier & Retrieval Bottleneck</div>
+        </div>
+        <div class="content-area">
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-title" style="color: var(--accent-rose);">The Current State</div>
+              <div class="card-text">Students and staff depend on scattered PDFs, portal pages, email threads, and office visits. Answers are slow, inconsistent, and hard to verify.</div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="color: var(--accent-amber);">Technical Friction</div>
+              <div class="card-text">General-purpose chat tools hallucinate, lose context, and cannot cite university documents with enough precision for policy, admission, or course questions.</div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="color: var(--accent-cyan);">The Core Dilemma</div>
+              <div class="card-text">Users are forced to choose between manual searching and external tools that are not grounded in the university's own sources.</div>
+            </div>
+          </div>
+          <div class="card" style="background: rgba(56, 189, 248, 0.05); border-color: var(--accent-cyan);">
+            <div class="card-title" style="color: var(--accent-cyan);">The Bottleneck: Generic LLM vs. Grounded Retrieval</div>
+            <div class="card-text">Without retrieval and citations, a model can answer quickly but incorrectly. A university assistant needs source control, confidence thresholds, and traceable responses.</div>
+          </div>
+        </div>
+      </div>
+      <div class="presenter-note">
+        <div class="note-icon">👨🏫</div>
+        <div class="note-content">
+          <div class="note-title">Presenter Note for the Doctor</div>
+          "We are targeting the gap between useful generative answers and verifiable academic answers. The real problem is not generation alone, but trusted grounding in local university knowledge."
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 2: What We Build</div>
+          <div class="slide-title">Local LLM + RAG Assistant for the University</div>
+        </div>
+        <div class="content-area">
+          <p style="color: var(--text-muted); font-size: 1.05rem;">
+            A self-contained assistant that answers academic and administrative questions from university documents, policies, and course materials without relying on ungrounded public responses.
+          </p>
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-title">1. Document Grounding</div>
+              <div class="card-text">Indexes university PDFs, guides, and announcements so the assistant answers from approved material instead of from memory.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">2. Retrieval + Generation</div>
+              <div class="card-text">Uses vector search to fetch relevant passages, then generates concise answers that stay close to the retrieved text.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">3. Usable Output</div>
+              <div class="card-text">Returns answers with citations, source snippets, and a clear path for users to verify the result.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="presenter-note">
+        <div class="note-icon">👨🏫</div>
+        <div class="note-content">
+          <div class="note-title">Presenter Note for the Doctor</div>
+          "This is not a generic chatbot. It is a retrieval-backed university assistant with a controlled document set, so every answer can be traced back to institutional sources."
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 3: How It Works</div>
+          <div class="slide-title">System Architecture & Retrieval Pipeline</div>
+        </div>
+        <div class="content-area">
+          <div class="pipeline">
+            <div class="pipeline-step">
+              <h4>1. Input Layer</h4>
+              <p>University documents, policies, catalogs, and FAQs enter the system as local files.</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <h4>2. Preprocessing</h4>
+              <p>Text is cleaned, chunked, and embedded into a searchable vector index.</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <h4>3. Core Engine</h4>
+              <p>A local or hosted model uses retrieved passages to answer with grounded context.</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <h4>4. Output</h4>
+              <p>Cited answers are returned in a web UI with source links and confidence cues.</p>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Document Processing</div>
+              <div class="card-text">Files are split into chunks by section and embedded locally so retrieval can target the exact passage needed for each question.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Answer Control</div>
+              <div class="card-text">Prompting and source filtering keep the assistant narrow, auditable, and less likely to fabricate policy details.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="presenter-note">
+        <div class="note-icon">👨🏫</div>
+        <div class="note-content">
+          <div class="note-title">Presenter Note for the Doctor</div>
+          "The engineering challenge is to keep answers short, relevant, and grounded while reducing hallucination risk. Retrieval quality matters more here than raw model size."
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 4: Research Angle</div>
+          <div class="slide-title">Academic Contribution & Evaluation</div>
+        </div>
+        <div class="content-area">
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            <strong>The Thesis Question:</strong> How much does retrieval-grounding improve answer reliability, citation quality, and student usability compared with a plain LLM on university questions?
+          </p>
+          <div class="grid-2x2">
+            <div class="card">
+              <div class="card-title">Execution Speed</div>
+              <div class="card-text">Measure retrieval latency, answer generation time, and end-to-end response speed for common student queries.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Accuracy & Faithfulness</div>
+              <div class="card-text">Evaluate whether the answer matches the source passages and whether it avoids unsupported claims.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Source Usefulness</div>
+              <div class="card-text">Check whether students can actually use the citations to verify policy and course answers without extra searching.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Scalability</div>
+              <div class="card-text">Test how performance changes as the corpus grows from a few documents to a larger university knowledge base.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="presenter-note">
+        <div class="note-icon">👨🏫</div>
+        <div class="note-content">
+          <div class="note-title">Presenter Note for the Doctor</div>
+          "The research value is in controlled evaluation: answer correctness, source grounding, and the practical value of citations for a real university environment."
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 5: Scoping & Execution</div>
+          <div class="slide-title">Project Feasibility & Scalable Tiers</div>
+        </div>
+        <div class="content-area">
+          <div class="grid-3">
+            <div class="tier-card featured">
+              <div class="tier-badge">Graduation Target</div>
+              <div class="tier-title">Tier 1: MVP</div>
+              <div class="tier-subtitle">Guaranteed Deliverable</div>
+              <ul class="tier-list">
+                <li>Local document ingestion and search.</li>
+                <li>Question answering with citations.</li>
+                <li>Simple university web interface.</li>
+                <li>Core evaluation dataset and paper.</li>
+              </ul>
+            </div>
+            <div class="tier-card">
+              <div class="tier-title">Tier 2: Target System</div>
+              <div class="tier-subtitle">Full Academic Scope</div>
+              <ul class="tier-list">
+                <li>Broader document corpus.</li>
+                <li>Role-aware access paths for users.</li>
+                <li>Better ranking and response controls.</li>
+                <li>Side-by-side LLM comparison tests.</li>
+              </ul>
+            </div>
+            <div class="tier-card">
+              <div class="tier-title">Tier 3: Future Scope</div>
+              <div class="tier-subtitle">Stretch Goals</div>
+              <ul class="tier-list">
+                <li>Department-specific assistants.</li>
+                <li>Document update monitoring.</li>
+                <li>Workflow automation and service routing.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="presenter-note">
+        <div class="note-icon">👨🏫</div>
+        <div class="note-content">
+          <div class="note-title">Presenter Note for the Doctor</div>
+          "By separating the minimum viable system from the research stretch, we keep the scope deliverable while still leaving room for a strong academic paper and future expansion."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Use <span class="kbd">Left</span> and <span class="kbd">Right</span> arrow keys or buttons above to navigate slides.</div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateDeck() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+      });
+      counter.innerText = `Slide ${currentSlide + 1} of ${slides.length}`;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function changeSlide(direction) {
+      const nextIndex = currentSlide + direction;
+      if (nextIndex >= 0 && nextIndex < slides.length) {
+        currentSlide = nextIndex;
+        updateDeck();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') changeSlide(-1);
+    });
+
+    updateDeck();
+  </script>
 </body>
 </html>
