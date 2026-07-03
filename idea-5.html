@@ -5,45 +5,357 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="StudyX - AAST graduation project concept." />
   <title>StudyX - AAST GP 2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --paper: #f7f3ea;
+      --paper-2: #ebe5d8;
+      --ink: #171717;
+      --muted: #6f685e;
+      --line: #d6cdbd;
+      --blue: #235789;
+      --teal: #0c7c7c;
+      --red: #b7472a;
+      --green: #4f7d45;
+      --violet: #5d4c86;
+      --cyan: #0f8f87;
+      --coral: #c55339;
+      --paper-dim: #82796c;
+      --white: #fffdf8;
+      --shadow: 0 24px 80px rgba(32, 25, 15, 0.12);
+      --display: "Fraunces", Georgia, serif;
+      --body: "DM Sans", Arial, sans-serif;
+      --mono: "IBM Plex Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--body);
+      background:
+        linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+        var(--paper);
+      background-size: 28px 28px;
+      color: var(--ink);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 80% 12%, rgba(183, 71, 42, 0.13), transparent 28%),
+                  radial-gradient(circle at 10% 65%, rgba(35, 87, 137, 0.10), transparent 30%);
+      z-index: -1;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(247, 243, 234, 0.88);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      z-index: 10;
+    }
+    .deck-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--violet);
+    }
+    .nav-controls { display: flex; align-items: center; gap: 1rem; }
+    .btn {
+      background: var(--white);
+      color: var(--ink);
+      border: 1px solid var(--ink);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .slide-counter { font-size: 0.95rem; color: var(--muted); font-weight: 600; min-width: 80px; text-align: center; }
+    .viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1200px;
+      height: calc(100vh - 140px);
+      max-height: 800px;
+      background: rgba(255, 253, 248, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateX(50px);
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 2; }
+    .slide-header { margin-bottom: 1.5rem; border-bottom: 2px solid var(--line); padding-bottom: 1rem; }
+    .slide-tag { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--violet); font-weight: 700; margin-bottom: 0.3rem; }
+    .slide-title { font-size: 2rem; font-weight: 800; color: var(--ink); }
+    .content-area { flex: 1; display: flex; flex-direction: column; gap: 1.5rem; justify-content: center; }
+    .grid-2, .grid-3, .grid-2x2 { display: grid; gap: 1.25rem; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2x2 { grid-template-columns: 1fr 1fr; }
+    .card {
+      background: rgba(255, 253, 248, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--blue); margin-bottom: 0.5rem; }
+    .card-text { color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
+    .pipeline { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin: 1.5rem 0; }
+    .pipeline-step {
+      flex: 1;
+      background: rgba(255, 253, 248, 0.92);
+      border: 1px solid var(--blue);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1rem;
+      text-align: center;
+    }
+    .pipeline-step h4 { color: var(--teal); font-size: 1rem; margin-bottom: 0.4rem; }
+    .pipeline-step p { color: var(--muted); font-size: 0.85rem; line-height: 1.4; }
+    .pipeline-arrow { color: var(--blue); font-size: 1.5rem; font-weight: bold; }
+    .tier-card { background: rgba(255, 253, 248, 0.88); border: 1px solid var(--line); border-radius: 0.75rem; padding: 1.5rem; }
+    .tier-card.featured { border-color: var(--violet); }
+    .tier-badge { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(93, 76, 134, 0.08); color: var(--violet); font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .tier-title { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tier-subtitle { font-size: 0.85rem; color: var(--blue); margin-bottom: 1rem; font-weight: 600; }
+    .tier-list { list-style: none; color: var(--muted); font-size: 0.9rem; line-height: 1.6; padding: 0; margin: 0; }
+    .tier-list li { position: relative; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+    .tier-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--violet); }
+    .footer {
+      text-align: center;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: rgba(247, 243, 234, 0.92);
+      border-top: 1px solid var(--line);
+    }
+    .kbd { background: var(--white); border: 1px solid var(--ink); border-radius: 0.25rem; padding: 0.1rem 0.4rem; font-family: monospace; color: var(--blue); font-size: 0.75rem; }
+    .detail-lede { color: var(--muted); line-height: 1.7; font-size: 1.02rem; }
+    .visual-panel {
+      background: rgba(255, 253, 248, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    .chip, .node, .trace { position: absolute; border: 1px solid var(--ink); background: var(--paper); }
+    .node { width: 88px; height: 88px; display: grid; place-items: center; font-family: var(--mono); font-weight: 600; }
+    .chip { padding: 10px 12px; font-family: var(--mono); font-size: 0.72rem; }
+    .trace { height: 2px; background: var(--red); border: 0; transform-origin: left center; }
+    .screen {
+      width: 100%;
+      min-height: 330px;
+      position: relative;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, transparent 24px, rgba(23, 23, 23, 0.05) 25px),
+        linear-gradient(transparent 24px, rgba(23, 23, 23, 0.05) 25px),
+        #fbfaf5;
+      background-size: 25px 25px;
+      overflow: hidden;
+    }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .tag-row span { border: 1px solid var(--line); background: var(--white); padding: 8px 10px; font-family: var(--mono); font-size: 0.75rem; }
+    .section.page-end { padding-bottom: clamp(58px, 9vw, 120px); }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .detail-card { background: var(--white); border: 1px solid var(--line); padding: 24px; }
+    .detail-card p, .detail-card li { color: var(--muted); line-height: 1.7; }
+    .detail-card ul { margin: 0; padding-left: 18px; }
+    .slide .deck-grid, .slide .deck-people, .slide .deck-ideas, .slide .constant-note { grid-column: 1 / -1; }
+    .slide-copy.wide { grid-column: 1 / -1; align-self: end; }
+    .final-slide { grid-template-columns: 1fr; align-content: center; }
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-2x2, .detail-grid { grid-template-columns: 1fr; }
+      .pipeline { flex-direction: column; }
+      .pipeline-arrow { transform: rotate(90deg); }
+      .slide { padding: 1.5rem; height: calc(100vh - 120px); }
+      .slide-title { font-size: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html"><span class="brand-mark">GP</span><span>AAST Research Pitch</span></a>
-    <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav class="site-nav" id="site-nav" aria-label="Primary navigation"><a href="index.html#team">Team</a><a href="index.html#plans">Plans</a><a href="index.html#ideas">Ideas</a></nav>
-  </header>
-  <main class="hero detail-hero">
-    <section>
-      <a class="back-link" href="index.html#ideas">Back to ideas</a>
-      <p class="kicker">Idea 05 - EdTech Platform</p>
-      <h1>StudyX</h1>
-      <p class="detail-lede">A study workspace that converts lecture notes, PDFs, and recordings into summaries, flashcards, quizzes, and revision plans.</p>
-      <div class="tag-row"><span>React</span><span>Supabase</span><span>LLM workflows</span><span>Quiz generation</span><span>Learning analytics</span></div>
-    </section>
-    <aside class="visual-panel" aria-label="StudyX learning flow mockup">
-      <div class="screen">
-        <div class="chip" style="left:8%;top:12%;">Upload lecture</div>
-        <div class="chip" style="left:8%;top:30%;">Extract key ideas</div>
-        <div class="node" style="right:12%;top:22%;background:#5d4c86;color:#fffdf8;">StudyX</div>
-        <div class="chip" style="left:10%;bottom:16%;">Flashcards</div>
-        <div class="chip" style="right:10%;bottom:16%;">Exam drill</div>
-        <div class="trace" style="left:35%;top:33%;width:31%;background:#5d4c86;"></div>
-      </div>
-    </aside>
-  </main>
-  <section class="section page-end">
-    <div class="detail-grid">
-      <article class="detail-card"><h3>The problem</h3><p>Students collect too much material and often revise passively. Turning lectures into useful practice takes time they usually do not have.</p></article>
-      <article class="detail-card"><h3>What we build</h3><p>A web app that turns course material into structured notes, flashcards, short quizzes, and revision sessions tied to a student's upcoming exams.</p></article>
-      <article class="detail-card"><h3>How it works</h3><p>Uploaded content is parsed, summarized, chunked by topic, and converted into question formats. Student performance updates the revision plan.</p></article>
-      <article class="detail-card"><h3>Research angle</h3><p>The paper can study generated-question quality, retention improvement, personalization, and student engagement across a semester.</p></article>
-      <article class="detail-card span-2"><h3>Differentiation</h3><p>Unlike a general chatbot, StudyX keeps course context, tracks weak topics, produces repeatable practice, and gives students a revision loop instead of one-off answers.</p></article>
+  <div class="top-bar">
+    <div class="deck-title">StudyX</div>
+    <div class="nav-controls">
+      <button class="btn" id="prevBtn" onclick="changeSlide(-1)">Prev</button>
+      <div class="slide-counter" id="counter">Slide 1 of 5</div>
+      <button class="btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
     </div>
-  </section>
-  <script src="script.js"></script>
+  </div>
+
+  <div class="viewport">
+    <div class="slide active">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 1: The Problem</div>
+          <div class="slide-title">Student Study Workflow Friction</div>
+        </div>
+        <div class="content-area">
+          <div class="grid-2">
+            <div>
+              <h3>The Current State</h3>
+              <p class="detail-lede">Students collect too much material and often revise passively. Turning lectures into useful practice takes time they do not have.</p>
+              <h3>The Technical Friction</h3>
+              <p class="detail-lede">Notes, PDFs, and recordings are scattered across tools, so revision becomes manual and inconsistent.</p>
+              <h3>The Core Dilemma</h3>
+              <p class="detail-lede">Students either re-read everything or use general tools that do not keep course context or weak-topic tracking.</p>
+            </div>
+            <div class="visual-panel">
+              <div class="screen">
+                <div class="chip" style="left:8%;top:12%;">Lecture notes</div>
+                <div class="chip" style="left:8%;top:30%;">PDFs</div>
+                <div class="node" style="left:40%;top:40%;background:#171717;color:#f7f3ea;">StudyX</div>
+                <div class="chip" style="right:8%;bottom:15%;">Flashcards</div>
+                <div class="chip" style="left:8%;bottom:15%;">Quizzes</div>
+                <div class="trace" style="left:30%;top:27%;width:24%;transform:rotate(12deg);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 2: What We Build</div>
+          <div class="slide-title">StudyX: Structured Revision Workspace</div>
+        </div>
+        <div class="content-area">
+          <p class="detail-lede"><strong>The Core System:</strong> A study workspace that converts lecture notes, PDFs, and recordings into summaries, flashcards, quizzes, and revision plans.</p>
+          <div class="grid-3">
+            <div class="card"><div class="card-title">1. Ingest</div><div class="card-text">Import course material and organize it by topic.</div></div>
+            <div class="card"><div class="card-title">2. Transform</div><div class="card-text">Summarize, chunk, and convert content into practice formats.</div></div>
+            <div class="card"><div class="card-title">3. Revise</div><div class="card-text">Track weak topics and generate repeatable study sessions.</div></div>
+          </div>
+          <div class="visual-panel">
+            <div class="screen">
+              <div class="chip" style="left:10%;top:16%;">Upload lecture</div>
+              <div class="chip" style="right:10%;top:16%;">Parse content</div>
+              <div class="node" style="left:40%;top:36%;background:#171717;color:#f7f3ea;">StudyX</div>
+              <div class="chip" style="left:10%;bottom:14%;">Flashcards</div>
+              <div class="chip" style="right:10%;bottom:14%;">Exam drill</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 3: How It Works</div>
+          <div class="slide-title">Revision Pipeline</div>
+        </div>
+        <div class="content-area">
+          <div class="pipeline">
+            <div class="pipeline-step"><h4>Input</h4><p>Lecture notes and recordings</p></div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step"><h4>Processing</h4><p>Summaries and topic chunks</p></div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step"><h4>Generation</h4><p>Quizzes and flashcards</p></div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step"><h4>Output</h4><p>Revision sessions and analytics</p></div>
+          </div>
+          <div class="grid-2">
+            <div class="card"><div class="card-title">Content Processing</div><div class="card-text">Uploaded content is parsed, summarized, chunked by topic, and converted into question formats.</div></div>
+            <div class="card"><div class="card-title">Student Feedback</div><div class="card-text">Student performance updates the revision plan so the workspace stays adaptive.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 4: Research Angle</div>
+          <div class="slide-title">Academic Contribution & Evaluation</div>
+        </div>
+        <div class="content-area">
+          <p class="detail-lede"><strong>The Thesis Question:</strong> How does a structured revision workspace affect retention, personalization, and engagement across a semester?</p>
+          <div class="grid-2x2">
+            <div class="card"><div class="card-title">Question Quality</div><div class="card-text">Measure generated-question usefulness and correctness.</div></div>
+            <div class="card"><div class="card-title">Retention Improvement</div><div class="card-text">Compare revision outcomes before and after using StudyX.</div></div>
+            <div class="card"><div class="card-title">Personalization</div><div class="card-text">Track weak-topic handling and revision scheduling.</div></div>
+            <div class="card"><div class="card-title">Student Engagement</div><div class="card-text">Observe how often students return for repeat practice.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 5: Scoping & Execution</div>
+          <div class="slide-title">Project Feasibility & Scalable Tiers</div>
+        </div>
+        <div class="content-area">
+          <div class="grid-3">
+            <div class="tier-card featured"><div class="tier-badge">MVP</div><div class="tier-title">Tier 1: The MVP</div><div class="tier-subtitle">Guaranteed Deliverable</div><ul class="tier-list"><li>Upload and parse lecture material.</li><li>Generate summaries and flashcards.</li><li>Basic revision loop.</li></ul></div>
+            <div class="tier-card"><div class="tier-title">Tier 2: Target System</div><div class="tier-subtitle">Full Academic Scope</div><ul class="tier-list"><li>Quiz generation and analytics.</li><li>Weak-topic tracking.</li><li>Revision scheduling.</li></ul></div>
+            <div class="tier-card"><div class="tier-title">Tier 3: Future Scope</div><div class="tier-subtitle">Stretch Goals</div><ul class="tier-list"><li>Cross-course dashboards.</li><li>Collaborative study rooms.</li><li>Cross-device sync and reminders.</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Use <span class="kbd">Left</span> and <span class="kbd">Right</span> arrow keys or buttons above to navigate slides.</div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateDeck() {
+      slides.forEach((slide, index) => slide.classList.toggle('active', index === currentSlide));
+      counter.innerText = `Slide ${currentSlide + 1} of ${slides.length}`;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+    function changeSlide(direction) {
+      const nextIndex = currentSlide + direction;
+      if (nextIndex >= 0 && nextIndex < slides.length) {
+        currentSlide = nextIndex;
+        updateDeck();
+      }
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') changeSlide(-1);
+    });
+    updateDeck();
+  </script>
 </body>
 </html>
