@@ -5,44 +5,500 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="AI Immune System - AAST graduation project concept." />
   <title>AI Immune System - AAST GP 2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #0ea5e9;
+      --primary-light: #38bdf8;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --border: #334155;
+      --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(30, 41, 59, 0.8);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+    .deck-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn:hover:not(:disabled) {
+      background: var(--primary-light);
+      color: #000;
+      border-color: var(--primary-light);
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .slide-counter {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1200px;
+      height: calc(100vh - 140px);
+      max-height: 800px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateX(50px);
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 2; }
+
+    .slide-header {
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1rem;
+    }
+    .slide-tag {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.05;
+    }
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .grid-2, .grid-3, .grid-2x2 {
+      display: grid;
+      gap: 1.25rem;
+    }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2x2 { grid-template-columns: 1fr 1fr; }
+    .card, .tier-card, .metric-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+    .card:hover, .tier-card:hover, .metric-card:hover { border-color: var(--primary-light); }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-text, .metric-card p, .tier-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .pipeline-step {
+      flex: 1;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--primary-light);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1rem;
+      text-align: center;
+    }
+    .pipeline-step h4 {
+      color: var(--accent);
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+    .pipeline-step p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+    .pipeline-arrow {
+      color: var(--primary-light);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .tier-card { position: relative; overflow: hidden; }
+    .tier-card.mvp { border-top: 3px solid var(--accent); }
+    .tier-card.target { border-top: 3px solid var(--primary-light); }
+    .tier-card.future { border-top: 3px solid var(--text-muted); }
+    .tier-title { font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem; }
+    .tier-subtitle { font-size: 0.85rem; color: var(--primary-light); margin-bottom: 1rem; font-weight: 600; }
+
+    .tier-list {
+      list-style: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .tier-list li {
+      position: relative;
+      padding-left: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .tier-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: var(--primary-light);
+    }
+
+    .visual-panel {
+      background: #0f172a;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    .visual-panel strong { color: var(--primary-light); }
+
+    .grid-2x2 .metric-card {
+      padding: 15px;
+      border-top: 3px solid var(--primary-light);
+    }
+    .metric-card h4 {
+      color: var(--primary-light);
+      font-size: 1rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border);
+    }
+    .kbd {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.25rem;
+      padding: 0.1rem 0.4rem;
+      font-family: monospace;
+      color: var(--primary-light);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-2x2 { grid-template-columns: 1fr; }
+      .pipeline { flex-direction: column; }
+      .pipeline-arrow { transform: rotate(90deg); }
+      .slide { padding: 1.5rem; height: calc(100vh - 120px); }
+      .slide-title { font-size: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html"><span class="brand-mark">GP</span><span>AAST Research Pitch</span></a>
-    <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav class="site-nav" id="site-nav" aria-label="Primary navigation"><a href="index.html#team">Team</a><a href="index.html#plans">Plans</a><a href="index.html#ideas">Ideas</a></nav>
-  </header>
-  <main class="hero detail-hero">
-    <section>
-      <a class="back-link" href="index.html#ideas">Back to ideas</a>
-      <p class="kicker">Idea 04 - Medical Vision</p>
-      <h1>AI Immune System</h1>
-      <p class="detail-lede">A computer vision assistant that detects and labels anomalies in blood cell imagery to support faster clinical screening workflows.</p>
-      <div class="tag-row"><span>YOLOv8</span><span>OpenCV</span><span>FastAPI</span><span>Medical imaging</span><span>Annotation</span></div>
-    </section>
-    <aside class="visual-panel" aria-label="Blood cell detection mockup">
-      <div class="screen">
-        <div class="node" style="left:12%;top:18%;border-radius:50%;background:#dcead3;">WBC</div>
-        <div class="node" style="right:14%;top:20%;border-radius:50%;background:#e8cfc7;">RBC</div>
-        <div class="node" style="left:38%;bottom:18%;border-radius:50%;background:#dcead3;">Flag</div>
-        <div class="chip" style="left:8%;bottom:10%;">confidence 0.91</div>
-        <div class="chip" style="right:8%;bottom:10%;">review queue</div>
-      </div>
-    </aside>
-  </main>
-  <section class="section page-end">
-    <div class="detail-grid">
-      <article class="detail-card"><h3>The problem</h3><p>Manual cell screening is time-consuming and depends on specialist availability. Delays can slow down diagnosis and follow-up decisions.</p></article>
-      <article class="detail-card"><h3>What we build</h3><p>A web tool where a microscope image is uploaded, analyzed, annotated, and returned with detections and confidence scores for review.</p></article>
-      <article class="detail-card"><h3>How it works</h3><p>A detection model identifies target cell classes and anomalies. A backend stores cases, annotations, and model outputs for comparison and review.</p></article>
-      <article class="detail-card"><h3>Research angle</h3><p>The paper can evaluate detection accuracy, dataset quality, model explainability, and clinician-in-the-loop review workflows.</p></article>
-      <article class="detail-card span-2"><h3>Data strategy</h3><p>Start with public blood-cell datasets, then seek a supervised hospital or lab partnership for validation images and annotation review.</p></article>
+  <div class="top-bar">
+    <div class="deck-title">AI Immune System</div>
+    <div class="nav-controls">
+      <button class="btn" id="prevBtn" onclick="changeSlide(-1)">Prev</button>
+      <div class="slide-counter" id="counter">Slide 1 of 5</div>
+      <button class="btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
     </div>
-  </section>
-  <script src="script.js"></script>
+  </div>
+
+  <div class="viewport">
+    <div class="slide active">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 1: The Problem</div>
+          <div class="slide-title">Immunology Diagnostics Inefficiency & Bottlenecks</div>
+        </div>
+        <div class="content-area">
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-title" style="color: var(--danger);">The Current State</div>
+              <div class="card-text">Clinical laboratories and hematologists still rely on manual microscope reviews or baseline flow cytometry to analyze blood smears and immune responses.</div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="color: var(--primary-light);">Technical Friction</div>
+              <div class="card-text">Manual workflows suffer from fatigue-driven error rates and inter-observer variability, especially with atypical white blood cell shapes and micro-patterns.</div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="color: var(--accent);">The Core Dilemma</div>
+              <div class="card-text">Healthcare facilities are forced to choose between fast but shallow manual scanning and expensive specialized testing that takes more time and money.</div>
+            </div>
+          </div>
+          <div class="visual-panel">
+            <div>
+              <div style="color: var(--danger); font-size: 3rem; margin-bottom: 10px;">◼</div>
+              <h4 style="color: var(--text-main); margin-bottom: 10px;">Manual Smear Review Bottleneck</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">High latency  Variable accuracy  Lab fatigue</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 2: What We Build</div>
+          <div class="slide-title">ImmunAI Recognition Engine</div>
+        </div>
+        <div class="content-area">
+          <p style="color: var(--text-muted); font-size: 1.05rem;">
+            A high-throughput, web-accessible intelligent software engine designed to automate, segment, and classify microscopic immunologic data.
+          </p>
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-title">1. Automated Cellular Ingestion</div>
+              <div class="card-text">Normalizes, balances, and segments high-resolution blood smear micrographs without destroying fine semantic boundaries.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">2. Deep Learning Segmentation</div>
+              <div class="card-text">Uses custom convolutional networks optimized to isolate complex cell structures and morphometry.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">3. Diagnostic Analytics Interface</div>
+              <div class="card-text">Generates real-time interactive differentials with cell-by-cell abnormality metrics on a clean dashboard.</div>
+            </div>
+          </div>
+          <div class="visual-panel">
+            <div style="width:100%; border:1px solid var(--border); padding:15px; background:#0f172a; border-radius:8px;">
+              <span style="color: var(--accent); font-size: 0.8rem; display:block; text-align:left;">[AI DASHBOARD MOCKUP]</span>
+              <div style="display:flex; gap:10px; margin-top:10px;">
+                <div style="flex:1; height:80px; background:#1e293b; border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--primary-light)">Cell Isolation</div>
+                <div style="flex:1; height:80px; background:#1e293b; border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--accent)">Class Map</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 3: How It Works</div>
+          <div class="slide-title">System Architecture & Processing Pipeline</div>
+        </div>
+        <div class="content-area">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Input & Preprocessing</div>
+              <div class="card-text">Raw microscope images are accepted via secure APIs, then normalized with Adaptive Histogram Equalization to handle different lab lighting conditions.</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Core Processing Engine</div>
+              <div class="card-text">Data flows into a deep neural network to compute cellular features, boundaries, and nucleus-to-cytoplasm ratios.</div>
+            </div>
+          </div>
+          <div class="pipeline">
+            <div class="pipeline-step">
+              <h4>Raw Micrographs</h4>
+              <p>Microscope images enter the system</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <h4>Normalization</h4>
+              <p>Equalize and isolate regions of interest</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <h4>Segmentation</h4>
+              <p>Detect cells and anomaly structures</p>
+            </div>
+            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-step">
+              <h4>Dashboard Output</h4>
+              <p>Show metrics and review queue</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 4: Research Angle</div>
+          <div class="slide-title">Academic Contribution & Evaluation Metrics</div>
+        </div>
+        <div class="content-area">
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            <strong>The Thesis Question:</strong> How does our localized deep learning segmentation paradigm compare against traditional manual heuristics and legacy computer vision threshold techniques when analyzing overlapping or poorly stained cells?
+          </p>
+          <div class="grid-2x2">
+            <div class="metric-card">
+              <h4>Execution Speed</h4>
+              <p>Benchmarking time from raw ingestion to diagnostic presentation.</p>
+            </div>
+            <div class="metric-card">
+              <h4>Algorithmic Accuracy</h4>
+              <p>Evaluating sensitivity, specificity, and F1-scores against expert ground-truths.</p>
+            </div>
+            <div class="metric-card">
+              <h4>Resource Footprint</h4>
+              <p>Tracking peak RAM overhead and compute metrics under local processing.</p>
+            </div>
+            <div class="metric-card">
+              <h4>Scalability Capacity</h4>
+              <p>Measuring throughput degradation as image batch volumes increase.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div>
+        <div class="slide-header">
+          <div class="slide-tag">Slide 5: Scoping & Execution</div>
+          <div class="slide-title">Project Feasibility & Scalable Execution Tiers</div>
+        </div>
+        <div class="content-area">
+          <div class="grid-3">
+            <div class="tier-card mvp">
+              <div class="tier-title">Tier 1: The MVP</div>
+              <div class="tier-subtitle">Guaranteed Deliverable</div>
+              <ul class="tier-list">
+                <li>Local offline pipeline for single blood smear images.</li>
+                <li>Binary segmentation to distinguish white blood cells.</li>
+                <li>Classification maps for presentation.</li>
+                <li>Safe graduation timeline scope.</li>
+              </ul>
+            </div>
+            <div class="tier-card target">
+              <div class="tier-title">Tier 2: Target System</div>
+              <div class="tier-subtitle">Full Academic Scope</div>
+              <ul class="tier-list">
+                <li>Interactive dashboard for multi-class differential tracking.</li>
+                <li>Multi-user accounts and pipeline logging.</li>
+                <li>Full academic evaluation modules.</li>
+                <li>Better review workflows for clinicians.</li>
+              </ul>
+            </div>
+            <div class="tier-card future">
+              <div class="tier-title">Tier 3: Future Stretch</div>
+              <div class="tier-subtitle">Stretch / Post-Grad Goals</div>
+              <ul class="tier-list">
+                <li>Real-time video-stream inference integration.</li>
+                <li>Live microscope camera support.</li>
+                <li>Cloud-native scaling configurations.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Use <span class="kbd">Left</span> and <span class="kbd">Right</span> arrow keys or buttons above to navigate slides.
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateDeck() {
+      slides.forEach((slide, index) => slide.classList.toggle('active', index === currentSlide));
+      counter.innerText = `Slide ${currentSlide + 1} of ${slides.length}`;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function changeSlide(direction) {
+      const nextIndex = currentSlide + direction;
+      if (nextIndex >= 0 && nextIndex < slides.length) {
+        currentSlide = nextIndex;
+        updateDeck();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') changeSlide(-1);
+    });
+
+    updateDeck();
+  </script>
 </body>
 </html>

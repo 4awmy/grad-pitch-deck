@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Edge-AI Provisioning Engine - AAST graduation project concept." />
+  <title>Edge-AI Provisioning Engine - AAST GP 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --slide-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.4);
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .slide {
+      background-color: var(--slide-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 1000px;
+      padding: 3rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .slide-header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .slide-number {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    h1 {
+      color: var(--accent);
+      margin: 0 0 0.5rem 0;
+      font-size: 2.2rem;
+    }
+
+    h2 {
+      color: var(--text-main);
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+
+    h3 {
+      color: var(--accent);
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+    }
+
+    p, li {
+      line-height: 1.6;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      background-color: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .diagram-container {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .metric-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .flow-diagram {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      background: #0f172a;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .flow-step {
+      background: #334155;
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      text-align: center;
+      flex: 1;
+      margin: 0 5px;
+      border: 1px solid var(--accent);
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .tier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
+
+    .tier-card {
+      background: #334155;
+      padding: 15px;
+      border-radius: 8px;
+      border-top: 3px solid var(--accent);
+    }
+
+    .tier-card.mvp { border-top-color: #10b981; }
+    .tier-card.target { border-top-color: #38bdf8; }
+    .tier-card.future { border-top-color: #94a3b8; }
+
+    .controls {
+      margin-top: 25px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn {
+      background-color: var(--accent);
+      color: var(--text-main);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background-color: #7dd3fc; }
+    .btn:disabled { background-color: #334155; color: var(--text-muted); cursor: not-allowed; }
+
+    .slide-counter {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .tier-grid { grid-template-columns: 1fr; }
+      .flow-diagram { flex-direction: column; gap: 0.75rem; }
+      .flow-arrow { transform: rotate(90deg); }
+      .slide { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="slide-1" class="slide">
+    <div class="slide-number">Slide 1</div>
+    <div class="slide-header">
+      <h1>The Problem</h1>
+      <h2>Local Edge-AI Deployment Bottlenecks for Small Enterprises</h2>
+    </div>
+    <div class="grid-2">
+      <div>
+        <h3>The Current State</h3>
+        <p>Small businesses still rely on manual data processing or expensive cloud subscriptions to handle invoicing, customer queries, and document retrieval.</p>
+        <h3>The Technical Friction</h3>
+        <p>Open-source tools fail because they create setup complexity and hardware mismatch on consumer-grade machines with limited RAM and compute.</p>
+        <h3>The Core Dilemma</h3>
+        <p>Users are forced to choose between vulnerable cloud APIs and local AI stacks that require deep Linux and Docker expertise to orchestrate.</p>
+      </div>
+      <div class="diagram-container">
+        <div class="mermaid">
+          graph TD
+              A[Small Business Needs AI] --> B{Choose Path}
+              B -->|Cloud API| C[High Recurring Cost]
+              B -->|Cloud API| D[Data Privacy Risk]
+              B -->|Local Open-Source| E[Setup Barrier]
+              B -->|Local Open-Source| F[Hardware Mismatch]
+              E --> G((Deployment Failure))
+              F --> G
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="slide-2" class="slide">
+    <div class="slide-number">Slide 2</div>
+    <div class="slide-header">
+      <h1>What We Build</h1>
+      <h2>Edge-AI Provisioner: An Automated Constraint-Aware Engine</h2>
+    </div>
+    <p><strong>The Core System:</strong> A self-contained local application designed to automate and optimize the architectural design and deployment of local AI environments based on hardware constraints.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>1. Automated Hardware Auditing</h3>
+        <p>Parses host specs and available VRAM/RAM without manual user input.</p>
+      </div>
+      <div class="card">
+        <h3>2. Constraint-Aware Routing</h3>
+        <p>Matches business needs to hardware-appropriate open-weight models through a constraint satisfaction algorithm.</p>
+      </div>
+      <div class="card">
+        <h3>3. Actionable Execution</h3>
+        <p>Delivers a ready-to-deploy Docker Compose package or installation script tailored to the target machine.</p>
+      </div>
+    </div>
+    <div class="diagram-container" style="margin-top: 2rem;">
+      <div class="mermaid">
+        usecaseDiagram
+            actor BusinessOwner as "Business Owner"
+            actor System as "Auditing Engine"
+
+            BusinessOwner --> (Input Needs & Data Types)
+            System --> (Audit Local Hardware Specs)
+
+            (Input Needs & Data Types) -.-> (Constraint Satisfaction Engine)
+            (Audit Local Hardware Specs) -.-> (Constraint Satisfaction Engine)
+
+            (Constraint Satisfaction Engine) --> (Generate Docker Compose Stack)
+      </div>
+    </div>
+  </div>
+
+  <div id="slide-3" class="slide">
+    <div class="slide-number">Slide 3</div>
+    <div class="slide-header">
+      <h1>How It Works</h1>
+      <h2>System Architecture & Resource-Matching Pipeline</h2>
+    </div>
+    <div class="diagram-container" style="margin-bottom: 2rem;">
+      <div class="mermaid">
+        flowchart LR
+            subgraph Input & Preprocessing
+                A[Hardware Profiler Script] --> C{Normalization Layer}
+                B[User Interview Dashboard] --> C
+            end
+
+            subgraph Core Processing Engine
+                C --> D[(Curated Component Catalog)]
+                D --> E[Constraint Satisfaction Algorithm]
+                E --> F[LLM Reasoner/Justifier]
+            end
+
+            subgraph Output & Integration
+                E --> G[Template Renderer]
+                G --> H[YAML / Shell Scripts]
+                F --> I[UI Recommendation Display]
+            end
+      </div>
+    </div>
+    <p><strong>Input & Preprocessing Layer:</strong> Raw system constraints and business logic inputs are normalized into a structured JSON profile.</p>
+    <p><strong>Core Processing Engine:</strong> A deterministic constraint satisfaction engine matches models and vector DBs to available memory.</p>
+    <p><strong>Output & Integration Layer:</strong> Processed results are exposed alongside customized, ready-to-execute provisioning scripts.</p>
+  </div>
+
+  <div id="slide-4" class="slide">
+    <div class="slide-number">Slide 4</div>
+    <div class="slide-header">
+      <h1>Research Angle</h1>
+      <h2>Academic Contribution & Comparative Evaluation</h2>
+    </div>
+    <p><strong>The Thesis Question:</strong> How does our Constraint-Aware Provisioning Algorithm compare against traditional manual system administration under strict memory constraints?</p>
+    <div class="grid-2">
+      <div class="card">
+        <span class="metric-icon">⏱</span>
+        <h3 style="margin-top:0">Deployment Latency</h3>
+        <p>Measure time from boot to a functional, locally hosted vector database query.</p>
+      </div>
+      <div class="card">
+        <span class="metric-icon">🎯</span>
+        <h3 style="margin-top:0">Configuration Accuracy</h3>
+        <p>Evaluate failed container starts and OOM errors against generalized open-source guides.</p>
+      </div>
+      <div class="card">
+        <span class="metric-icon">💾</span>
+        <h3 style="margin-top:0">Resource Efficiency</h3>
+        <p>Track peak RAM and VRAM footprint of the recommended stack.</p>
+      </div>
+      <div class="card">
+        <span class="metric-icon">📈</span>
+        <h3 style="margin-top:0">Engine Scalability</h3>
+        <p>Benchmark decision-engine processing time as the internal solution catalog grows.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="slide-5" class="slide">
+    <div class="slide-number">Slide 5</div>
+    <div class="slide-header">
+      <h1>Scoping & Implementation Tiers</h1>
+      <h2>Project Feasibility & Scalable Execution Tiers</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card tier-card mvp">
+        <h3 style="color:#10b981; margin-top:0;">Tier 1 - The MVP</h3>
+        <p><em>(Guaranteed Graduation Deliverable)</em></p>
+        <p><strong>Scope:</strong> A local web app that profiles hardware, interviews the user, and runs the constraint algorithm against a static catalog of five key archetypes.</p>
+      </div>
+      <div class="card tier-card target">
+        <h3 style="color:#38bdf8; margin-top:0;">Tier 2 - Target System</h3>
+        <p><em>(Full Academic Scope)</em></p>
+        <p><strong>Scope:</strong> End-to-end integration where the engine auto-spins Docker containers locally and includes a complete benchmarking suite.</p>
+      </div>
+      <div class="card tier-card future">
+        <h3 style="color:#94a3b8; margin-top:0;">Tier 3 - Future Work</h3>
+        <p><em>(Out of Scope / Stretch Goals)</em></p>
+        <p><strong>Scope:</strong> Distributed AI clusters across office PCs, auto-installing Linux on bare metal, or autonomous self-learning feedback loops.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prev-btn" class="btn" onclick="changeSlide(-1)" disabled>Previous</button>
+    <span id="slide-num" class="slide-counter">Slide 1 of 5</span>
+    <button id="next-btn" class="btn" onclick="changeSlide(1)">Next</button>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "dark",
+      fontFamily: "Segoe UI"
+    });
+
+    let currentSlide = 1;
+    const totalSlides = 5;
+
+    function changeSlide(direction) {
+      document.getElementById(`slide-${currentSlide}`).classList.remove("active");
+      currentSlide += direction;
+      if (currentSlide < 1) currentSlide = 1;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
+      document.getElementById(`slide-${currentSlide}`).classList.add("active");
+      document.getElementById("slide-num").innerText = `Slide ${currentSlide} of ${totalSlides}`;
+      document.getElementById("prev-btn").disabled = currentSlide === 1;
+      document.getElementById("next-btn").disabled = currentSlide === totalSlides;
+    }
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowRight" || event.key === " ") {
+        if (currentSlide < totalSlides) changeSlide(1);
+      } else if (event.key === "ArrowLeft") {
+        if (currentSlide > 1) changeSlide(-1);
+      }
+    });
+  </script>
+</body>
+</html>
