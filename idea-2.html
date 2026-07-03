@@ -230,6 +230,138 @@
       .slide-title { font-size: 1.5rem; }
     }
   </style>
+  <style>
+    :root {
+      --bg-primary: #f7f3ea;
+      --bg-card: #fffdf8;
+      --bg-card-hover: #f0eadf;
+      --text-main: #171717;
+      --text-muted: #6f685e;
+      --accent-cyan: #235789;
+      --accent-emerald: #0c7c7c;
+      --accent-amber: #b7472a;
+      --accent-rose: #b7472a;
+      --border-color: #d6cdbd;
+      --font-family: 'DM Sans', Arial, sans-serif;
+    }
+
+    body {
+      background:
+        linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+        var(--bg-primary) !important;
+      background-size: 28px 28px;
+      color: var(--text-main) !important;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 80% 12%, rgba(183, 71, 42, 0.13), transparent 28%),
+                  radial-gradient(circle at 10% 65%, rgba(35, 87, 137, 0.10), transparent 30%);
+      z-index: -1;
+    }
+
+    .top-bar,
+    .controls {
+      background: rgba(247, 243, 234, 0.92);
+      border-color: #d6cdbd;
+      color: var(--text-main);
+    }
+
+    .deck-title { color: var(--accent-cyan); }
+
+    .btn {
+      background: var(--white, #fffdf8);
+      color: var(--ink, #171717);
+      border: 1px solid var(--ink, #171717);
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--ink, #171717);
+      color: var(--paper, #f7f3ea);
+      border-color: var(--ink, #171717);
+    }
+
+    .slide {
+      background: rgba(255, 253, 248, 0.94);
+      border-color: #d6cdbd;
+      color: var(--text-main);
+      box-shadow: 0 24px 80px rgba(32, 25, 15, 0.12);
+    }
+
+    .slide-header {
+      border-bottom-color: #d6cdbd;
+    }
+
+    .slide-tag {
+      color: var(--accent-amber);
+    }
+
+    .slide-title,
+    h1 {
+      color: var(--text-main);
+    }
+
+    .card,
+    .tier-card,
+    .metric-card,
+    .pillar-card,
+    .visual-panel {
+      background: rgba(255, 253, 248, 0.88);
+      border-color: #d6cdbd;
+      color: var(--text-main);
+    }
+
+    .card:hover,
+    .tier-card:hover,
+    .metric-card:hover {
+      border-color: var(--accent-cyan);
+    }
+
+    .card-text,
+    .metric-card p,
+    .tier-card p,
+    p,
+    li {
+      color: var(--text-muted);
+    }
+
+    .card-title,
+    .pipeline-step h4,
+    .tier-subtitle {
+      color: var(--accent-cyan);
+    }
+
+    .pipeline-step,
+    .flow-step {
+      background: rgba(255, 253, 248, 0.92);
+      border-color: var(--accent-cyan);
+      color: var(--text-main);
+    }
+
+    .pipeline-arrow {
+      color: var(--accent-cyan);
+    }
+
+    .tier-card.mvp { border-top-color: var(--accent-cyan); }
+    .tier-card.target { border-top-color: var(--blue, #235789); }
+    .tier-card.future { border-top-color: var(--text-muted); }
+
+    .footer {
+      background: rgba(247, 243, 234, 0.92);
+      border-top-color: #d6cdbd;
+      color: var(--text-muted);
+    }
+
+    .kbd {
+      background: var(--white, #fffdf8);
+      color: var(--accent-cyan);
+      border-color: var(--ink, #171717);
+    }
+  </style>
 </head>
 <body>
   <div class="top-bar">

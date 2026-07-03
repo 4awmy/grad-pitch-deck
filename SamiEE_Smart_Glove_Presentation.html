@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sami'ee (Ã˜Â³Ã™â€¦Ã™Å Ã˜Â¹): Sign-to-Egyptian-Arabic Smart Glove</title>
+    <title>Sami'ee (&#1587;&#1605;&#1610;&#1593;): Sign-to-Egyptian-Arabic Smart Glove</title>
     <style>
         :root {
             --bg-primary: #0f172a;
@@ -316,12 +316,131 @@
             .slide-title { font-size: 1.5rem; }
         }
     </style>
+    <style>
+        :root {
+            --bg-primary: #f7f3ea;
+            --bg-card: #fffdf8;
+            --bg-card-hover: #f0eadf;
+            --text-main: #171717;
+            --text-muted: #6f685e;
+            --accent-cyan: #235789;
+            --accent-emerald: #0c7c7c;
+            --accent-amber: #b7472a;
+            --accent-rose: #b7472a;
+            --border-color: #d6cdbd;
+        }
+
+        body {
+            background:
+                linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+                var(--bg-primary) !important;
+            background-size: 28px 28px;
+            color: var(--text-main) !important;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 80% 12%, rgba(183, 71, 42, 0.13), transparent 28%),
+                        radial-gradient(circle at 10% 65%, rgba(35, 87, 137, 0.10), transparent 30%);
+            z-index: -1;
+        }
+
+        .top-bar,
+        .footer {
+            background: rgba(247, 243, 234, 0.92);
+            border-color: #d6cdbd;
+            color: var(--text-main);
+        }
+
+        .deck-title { color: var(--accent-cyan); }
+
+        .btn {
+            background: #fffdf8;
+            color: #171717;
+            border: 1px solid #171717;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #171717;
+            color: #f7f3ea;
+            border-color: #171717;
+        }
+
+        .slide {
+            background: rgba(255, 253, 248, 0.94);
+            border-color: #d6cdbd;
+            color: var(--text-main);
+            box-shadow: 0 24px 80px rgba(32, 25, 15, 0.12);
+        }
+
+        .slide-header {
+            border-bottom-color: #d6cdbd;
+        }
+
+        .slide-tag {
+            color: var(--accent-amber);
+        }
+
+        .slide-title,
+        h1, h2, h3, h4 {
+            color: var(--text-main);
+        }
+
+        .card,
+        .tier-card,
+        .visual-panel {
+            background: rgba(255, 253, 248, 0.88);
+            border-color: #d6cdbd;
+            color: var(--text-main);
+        }
+
+        .card-text,
+        .tier-list,
+        p {
+            color: var(--text-muted);
+        }
+
+        .card-title,
+        .pipeline-step h4,
+        .tier-subtitle {
+            color: var(--accent-cyan);
+        }
+
+        .pipeline-step {
+            background: rgba(255, 253, 248, 0.92);
+            border-color: var(--accent-cyan);
+        }
+
+        .pipeline-arrow {
+            color: var(--accent-cyan);
+        }
+
+        .tier-card.featured {
+            border-color: var(--accent-emerald);
+            background: rgba(255, 253, 248, 0.94);
+        }
+
+        .tier-badge {
+            background: var(--accent-emerald);
+            color: #fffdf8;
+        }
+
+        .kbd {
+            background: #fffdf8;
+            color: var(--accent-cyan);
+            border-color: #171717;
+        }
+    </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div class="deck-title">
-            <span>Ã°Å¸Â§Â¤ Sami'ee (Ã˜Â³Ã™â€¦Ã™Å Ã˜Â¹)</span> | Sign-to-Egyptian-Arabic Hardware
+            <span>Sami'ee (&#1587;&#1605;&#1610;&#1593;)</span> | Sign-to-Egyptian-Arabic Hardware
         </div>
         <div class="nav-controls">
             <button class="btn" id="prevBtn" onclick="changeSlide(-1)"> Prev</button>
@@ -353,14 +472,14 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-title" style="color: var(--accent-cyan);">Ã°Å¸â€â‚¬ The Core Dilemma</div>
+                            <div class="card-title" style="color: var(--accent-cyan);">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ The Core Dilemma</div>
                             <div class="card-text">
                                 Users are currently forced to choose between <strong>Option A:</strong> slow, inconvenient manual human communication and <strong>Option B:</strong> expensive, non-localized enterprise systems that lack real-time spoken Egyptian Arabic.
                             </div>
                         </div>
                     </div>
                     <div class="card" style="background: rgba(244, 63, 94, 0.05); border-color: var(--accent-rose);">
-                        <div class="card-title" style="color: var(--accent-rose);">Ã°Å¸â€œâ€° The Bottleneck: Camera Vision vs. Wearable Telemetry</div>
+                        <div class="card-title" style="color: var(--accent-rose);">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° The Bottleneck: Camera Vision vs. Wearable Telemetry</div>
                         <div class="card-text">
                             RGB Camera setups drop to <strong>&lt;40% accuracy</strong> in low-light environments or when fingers self-occlude during rapid signing. A wearable hardware solution eliminates line-of-sight dependencies entirely through direct kinematic sensing.
                         </div>
@@ -373,7 +492,7 @@
             <div>
                 <div class="slide-header">
                     <div class="slide-tag">Slide 2: What We Build</div>
-                    <div class="slide-title">Sami'ee (Ã˜Â³Ã™â€¦Ã™Å Ã˜Â¹): Real-Time Sign Translation Glove</div>
+                    <div class="slide-title">Sami'ee (&#1587;&#1605;&#1610;&#1593;): Real-Time Sign Translation Glove</div>
                 </div>
                 <div class="content-area">
                     <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 0.5rem;">
@@ -393,7 +512,7 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-title">Ã°Å¸â€Å  3. Actionable Execution</div>
+                            <div class="card-title">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã‚Â  3. Actionable Execution</div>
                             <div class="card-text">
                                 Delivers instantaneous output via an OLED wrist display and an integrated audio synthesizer (or BLE mobile app) speaking natural Egyptian Arabic text-to-speech (TTS) in real time.
                             </div>
@@ -433,7 +552,7 @@
                     </div>
                     <div class="grid-2">
                         <div class="card">
-                            <div class="card-title">Ã°Å¸Å½â€º Hardware & Preprocessing</div>
+                            <div class="card-title">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº Hardware & Preprocessing</div>
                             <div class="card-text">
                                 Analog voltages from flex sensors and raw gyroscope/accelerometer vectors are sampled by an ESP32 microcontroller. Embedded digital signal processing eliminates drift and environmental tremor noise.
                             </div>
@@ -467,19 +586,19 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-title">Ã°Å¸Å½Â¯ Accuracy & Error Rate (WER)</div>
+                            <div class="card-title">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ Accuracy & Error Rate (WER)</div>
                             <div class="card-text">
                                 Evaluating classification precision, recall, and F1-score across 50+ core Egyptian Arabic everyday signs compared to standard RGB-camera baseline models.
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-title">Ã°Å¸â€â€¹ Resource & Energy Efficiency</div>
+                            <div class="card-title">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ Resource & Energy Efficiency</div>
                             <div class="card-text">
                                 Tracking microcontroller memory footprint (SRAM/Flash usage), CPU clock utilization, and battery consumption (mA/hour) during continuous real-time signing.
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-title">Ã°Å¸â€œË† Vocabulary Scalability</div>
+                            <div class="card-title">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¹Ã¢â‚¬Â  Vocabulary Scalability</div>
                             <div class="card-text">
                                 Benchmarking classification accuracy degradation and inference time scaling as the sign library expands from a 20-word baseline to 200+ localized phrases.
                             </div>

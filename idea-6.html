@@ -209,6 +209,117 @@
       .slide { padding: 1.5rem; }
     }
   </style>
+  <style>
+    :root {
+      --bg-color: #f7f3ea;
+      --slide-bg: #fffdf8;
+      --text-main: #171717;
+      --text-muted: #6f685e;
+      --accent: #235789;
+      --accent-glow: rgba(35, 87, 137, 0.18);
+      --border: #d6cdbd;
+      --note-bg: #fef3c7;
+      --note-text: #854d0e;
+    }
+
+    body {
+      background:
+        linear-gradient(rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px),
+        var(--bg-color) !important;
+      background-size: 28px 28px;
+      color: var(--text-main) !important;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 80% 12%, rgba(183, 71, 42, 0.13), transparent 28%),
+                  radial-gradient(circle at 10% 65%, rgba(35, 87, 137, 0.10), transparent 30%);
+      z-index: -1;
+    }
+
+    .slide {
+      background: rgba(255, 253, 248, 0.95);
+      border-color: #d6cdbd;
+      color: var(--text-main);
+      box-shadow: 0 24px 80px rgba(32, 25, 15, 0.12);
+    }
+
+    .slide::before {
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .slide-header {
+      border-bottom-color: #d6cdbd;
+    }
+
+    .slide-number,
+    p, li {
+      color: var(--text-muted);
+    }
+
+    h1, h2 {
+      color: var(--text-main);
+    }
+
+    h1 {
+      color: var(--accent);
+    }
+
+    h3 {
+      color: var(--accent);
+    }
+
+    .card,
+    .tier-card,
+    .metric-card {
+      background: rgba(255, 253, 248, 0.88);
+      border-color: #d6cdbd;
+      color: var(--text-main);
+    }
+
+    .visual-panel {
+      background: #fffdf8;
+      border-color: #171717;
+      color: var(--text-main);
+    }
+
+    .flow-step {
+      background: rgba(255, 253, 248, 0.92);
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+
+    .flow-arrow { color: var(--accent); }
+    .btn {
+      background: #fffdf8;
+      color: #171717;
+      border: 1px solid #171717;
+    }
+    .btn:hover:not(:disabled) {
+      background: #171717;
+      color: #f7f3ea;
+      border-color: #171717;
+    }
+    .btn:disabled {
+      background: #ebe5d8;
+      color: var(--text-muted);
+    }
+    .footer {
+      background: rgba(247, 243, 234, 0.92);
+      border-top-color: #d6cdbd;
+      color: var(--text-muted);
+    }
+    .kbd {
+      background: #fffdf8;
+      color: var(--accent);
+      border-color: #171717;
+    }
+  </style>
 </head>
 <body>
 
