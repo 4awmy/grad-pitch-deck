@@ -28,6 +28,10 @@ body {
   background-size: 28px 28px;
   color: var(--ink);
 }
+body.deck-body {
+  height: 100vh;
+  overflow: hidden;
+}
 body::before {
   content: "";
   position: fixed;
@@ -61,6 +65,10 @@ img { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--line);
   background: rgba(247, 243, 234, 0.88);
   backdrop-filter: blur(18px);
+}
+.deck-header {
+  position: fixed;
+  inset: 0 0 auto;
 }
 .brand {
   display: inline-flex;
@@ -97,6 +105,12 @@ img { display: block; max-width: 100%; }
 .footer-links a:hover,
 .link-row a:hover { border-color: currentColor; }
 .menu-button { display: none; }
+.deck-counter {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
 .hero,
 .section,
 .site-footer {
@@ -472,6 +486,114 @@ h3 {
 .page-end {
   padding-bottom: clamp(58px, 9vw, 120px);
 }
+.deck {
+  position: relative;
+  height: 100vh;
+  padding-top: 72px;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 72px 0 0;
+  width: min(1180px, calc(100% - 36px));
+  height: calc(100vh - 72px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.75fr);
+  gap: clamp(28px, 6vw, 76px);
+  align-items: center;
+  padding: clamp(28px, 5vw, 64px) 0 92px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(18px);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.slide-copy.wide {
+  grid-column: 1 / -1;
+  align-self: end;
+}
+.slide .deck-grid,
+.slide .deck-people,
+.slide .deck-ideas,
+.slide .constant-note {
+  grid-column: 1 / -1;
+}
+.split-slide {
+  grid-template-columns: 340px 1fr;
+}
+.final-slide {
+  grid-template-columns: 1fr;
+  align-content: center;
+}
+.deck-two {
+  margin-top: 28px;
+}
+.deck-people .person-card {
+  min-height: 150px;
+}
+.deck-ideas .idea-card {
+  min-height: 190px;
+}
+.deck-controls {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transform: translateX(-50%);
+  padding: 10px;
+  background: rgba(255, 253, 248, 0.88);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+}
+.deck-button,
+.dot {
+  border: 1px solid var(--ink);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--mono);
+}
+.deck-button {
+  min-width: 72px;
+  height: 38px;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+.deck-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+.dot-nav {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border-radius: 50%;
+}
+.dot.active {
+  width: 32px;
+  border-radius: 999px;
+  background: var(--ink);
+}
+.deck-button:focus-visible,
+.dot:focus-visible,
+.button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;
@@ -487,6 +609,10 @@ h3 {
     padding: 10px 12px;
     font-family: var(--mono);
     text-transform: uppercase;
+  }
+  body.deck-body {
+    min-height: 100vh;
+    overflow: hidden;
   }
   .site-nav {
     position: absolute;
@@ -506,6 +632,20 @@ h3 {
   .detail-hero,
   .split,
   .site-footer { grid-template-columns: 1fr; }
+  .slide,
+  .split-slide {
+    grid-template-columns: 1fr;
+    align-content: start;
+    overflow-y: auto;
+    padding: 28px 0 118px;
+  }
+  .slide-copy.wide,
+  .slide .deck-grid,
+  .slide .deck-people,
+  .slide .deck-ideas,
+  .slide .constant-note {
+    grid-column: auto;
+  }
   .decision-board { transform: none; }
   .brief-grid,
   .plan-grid,
@@ -526,6 +666,18 @@ h3 {
   .site-footer { width: min(100% - 28px, 1180px); }
   h1 { font-size: 3rem; }
   h2 { font-size: 2.15rem; }
+  .brand span:last-child { display: none; }
+  .deck-controls {
+    width: calc(100% - 28px);
+    justify-content: space-between;
+  }
+  .dot-nav {
+    max-width: 42vw;
+    overflow: hidden;
+  }
+  .deck-button {
+    min-width: 58px;
+  }
   .person-card { grid-template-columns: 68px 1fr; }
   .person-card img {
     width: 68px;
