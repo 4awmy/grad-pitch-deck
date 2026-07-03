@@ -32,6 +32,9 @@ body.deck-body {
   height: 100vh;
   overflow: hidden;
 }
+body.deck-body::-webkit-scrollbar {
+  width: 0;
+}
 body::before {
   content: "";
   position: fixed;
@@ -387,6 +390,171 @@ h3 {
   color: var(--white);
   font-weight: 800;
 }
+.table-wrap {
+  margin-top: 2.2rem;
+  max-width: 940px;
+  border: 1px solid var(--line);
+}
+.trow {
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr 1.4fr;
+  border-top: 1px solid var(--line);
+}
+.trow:first-child {
+  border-top: none;
+}
+.trow.head .tcell {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+.trow.highlight {
+  background: rgba(35, 87, 137, 0.06);
+}
+.tcell {
+  padding: 1rem 1.3rem;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+}
+.co-name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+.badge {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  margin-left: 0.6rem;
+  text-transform: uppercase;
+}
+.badge-select {
+  color: var(--coral);
+  border: 1px solid rgba(255, 107, 91, 0.4);
+}
+.badge-open {
+  color: var(--cyan);
+  border: 1px solid rgba(69, 224, 214, 0.35);
+}
+.constant-layout {
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+.constant-layout .pipeline {
+  margin-top: 0;
+  max-width: none;
+}
+.const-box {
+  border: 1px solid rgba(255, 107, 91, 0.35);
+  background: rgba(255, 107, 91, 0.05);
+  padding: 1.6rem 1.8rem;
+  max-width: 760px;
+}
+.const-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--coral);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.const-text {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+.pipeline {
+  display: flex;
+  gap: 0;
+  max-width: 900px;
+}
+.pipe-node {
+  flex: 1;
+  position: relative;
+  padding: 1.3rem 1.4rem 1.3rem 0;
+  border-top: 2px solid var(--line);
+}
+.pipe-node:first-child {
+  border-top-color: var(--cyan);
+}
+.pipe-node::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--line);
+}
+.pipe-node:first-child::before {
+  border-color: var(--cyan);
+  background: var(--cyan);
+}
+.pipe-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--paper-dim);
+  text-transform: uppercase;
+}
+.pipe-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: 0.35rem 0 0.4rem;
+}
+.pipe-desc {
+  font-size: 0.88rem;
+  color: var(--paper-dim);
+  line-height: 1.5;
+}
+.timeline-flow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-top: 2.4rem;
+  max-width: 1000px;
+}
+.timeline-card {
+  position: relative;
+  padding: 1.3rem 1.1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  min-height: 132px;
+}
+.timeline-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  width: 14px;
+  height: 1px;
+  background: var(--line);
+}
+.timeline-card:last-child::after { display: none; }
+.timeline-card span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(69, 224, 214, 0.12);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  margin-bottom: 1rem;
+}
+.timeline-card h3 { font-size: 1rem; line-height: 1.35; }
 .idea-grid {
   grid-template-columns: repeat(6, 1fr);
 }
@@ -594,6 +762,19 @@ h3 {
   pointer-events: none;
   transform: translateY(18px);
   transition: opacity 260ms ease, transform 260ms ease;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue) transparent;
+}
+.slide::-webkit-scrollbar {
+  width: 8px;
+}
+.slide::-webkit-scrollbar-thumb {
+  background: rgba(35, 87, 137, 0.45);
+  border-radius: 999px;
+}
+.slide::-webkit-scrollbar-track {
+  background: transparent;
 }
 .ideas-slide {
   grid-template-columns: 1fr;
@@ -805,6 +986,19 @@ a:focus-visible {
   }
   .idea-row-meta {
     justify-self: start;
+  }
+  .timeline-flow {
+    grid-template-columns: 1fr;
+  }
+  .timeline-card::after {
+    display: none;
+  }
+  .pipeline {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pipe-node {
+    padding-right: 0;
   }
   .idea-card,
   .idea-card:nth-child(4),
