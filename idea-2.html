@@ -205,28 +205,7 @@
       line-height: 1.6;
     }
     .tier-list li { position: relative; padding-left: 1.25rem; margin-bottom: 0.5rem; }
-    .tier-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--accent-cyan); }
-    .presenter-note {
-      margin-top: 1.5rem;
-      background-color: rgba(245, 158, 11, 0.1);
-      border-left: 4px solid var(--accent-amber);
-      padding: 1rem 1.25rem;
-      border-radius: 0 0.5rem 0.5rem 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
-    .note-icon { color: var(--accent-amber); font-size: 1.25rem; line-height: 1; }
-    .note-content { font-size: 0.9rem; color: #fef3c7; line-height: 1.4; }
-    .note-title {
-      font-weight: 700;
-      color: var(--accent-amber);
-      margin-bottom: 0.2rem;
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-    }
-    .footer {
+    .tier-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--accent-cyan); }.footer {
       text-align: center;
       padding: 0.75rem;
       font-size: 0.8rem;
@@ -290,13 +269,6 @@
           </div>
         </div>
       </div>
-      <div class="presenter-note">
-        <div class="note-icon">👨🏫</div>
-        <div class="note-content">
-          <div class="note-title">Presenter Note for the Doctor</div>
-          "We are targeting the gap between useful generative answers and verifiable academic answers. The real problem is not generation alone, but trusted grounding in local university knowledge."
-        </div>
-      </div>
     </div>
 
     <div class="slide">
@@ -325,13 +297,6 @@
           </div>
         </div>
       </div>
-      <div class="presenter-note">
-        <div class="note-icon">👨🏫</div>
-        <div class="note-content">
-          <div class="note-title">Presenter Note for the Doctor</div>
-          "This is not a generic chatbot. It is a retrieval-backed university assistant with a controlled document set, so every answer can be traced back to institutional sources."
-        </div>
-      </div>
     </div>
 
     <div class="slide">
@@ -346,17 +311,17 @@
               <h4>1. Input Layer</h4>
               <p>University documents, policies, catalogs, and FAQs enter the system as local files.</p>
             </div>
-            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-arrow">Ã¢â€ â€™</div>
             <div class="pipeline-step">
               <h4>2. Preprocessing</h4>
               <p>Text is cleaned, chunked, and embedded into a searchable vector index.</p>
             </div>
-            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-arrow">Ã¢â€ â€™</div>
             <div class="pipeline-step">
               <h4>3. Core Engine</h4>
               <p>A local or hosted model uses retrieved passages to answer with grounded context.</p>
             </div>
-            <div class="pipeline-arrow">→</div>
+            <div class="pipeline-arrow">Ã¢â€ â€™</div>
             <div class="pipeline-step">
               <h4>4. Output</h4>
               <p>Cited answers are returned in a web UI with source links and confidence cues.</p>
@@ -372,13 +337,6 @@
               <div class="card-text">Prompting and source filtering keep the assistant narrow, auditable, and less likely to fabricate policy details.</div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="presenter-note">
-        <div class="note-icon">👨🏫</div>
-        <div class="note-content">
-          <div class="note-title">Presenter Note for the Doctor</div>
-          "The engineering challenge is to keep answers short, relevant, and grounded while reducing hallucination risk. Retrieval quality matters more here than raw model size."
         </div>
       </div>
     </div>
@@ -411,13 +369,6 @@
               <div class="card-text">Test how performance changes as the corpus grows from a few documents to a larger university knowledge base.</div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="presenter-note">
-        <div class="note-icon">👨🏫</div>
-        <div class="note-content">
-          <div class="note-title">Presenter Note for the Doctor</div>
-          "The research value is in controlled evaluation: answer correctness, source grounding, and the practical value of citations for a real university environment."
         </div>
       </div>
     </div>
@@ -461,13 +412,6 @@
               </ul>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="presenter-note">
-        <div class="note-icon">👨🏫</div>
-        <div class="note-content">
-          <div class="note-title">Presenter Note for the Doctor</div>
-          "By separating the minimum viable system from the research stretch, we keep the scope deliverable while still leaving room for a strong academic paper and future expansion."
         </div>
       </div>
     </div>
