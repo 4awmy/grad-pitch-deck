@@ -1,19 +1,26 @@
-# Graduation Project Pitch Deck
+# AAST Graduation Project Pitch
 
-An interactive HTML presentation for our graduation project team pitch.
+Static website for the AAST GP 2026 team pitch.
+
+## What It Contains
+
+- Landing page with team, supervision, execution plans, and project concepts
+- Five linked idea detail pages
+- Shared visual system in `style.css`
+- Small mobile navigation script in `script.js`
+- GitHub Pages-friendly static files
 
 ## Team
-- Ahmed Morsy — Computer Science
-- Omar Hossam — Computer Science
-- Abdullah Ashraf — Computer Science
-- Ahmed Ehab — Cybersecurity
-- Mark Hany — Cybersecurity
-- Mahmoud Samer — Software Engineering
 
-**Academic Supervisor:** Dr. Mahmoud Shawky
+- Omar Hossam - Computer Science
+- Ahmed Morsy - Computer Science
+- Abdullah Ashraf - Computer Science
+- Mark Hany - Cybersecurity
+- Ahmed Ehab - Cybersecurity
+- Mahmoud Samer - Software Engineering
 
-## Overview
-A walkthrough of our team, sponsorship options, and the plan we've built for each possible path — Plan A (Siemens), Plan B (Own Idea + Sponsor), and Plan C (Independent).
+Academic supervisor: Dr. Mahmoud Shawky
 
-## How to View
-Open `index.html` in any browser. Use arrow keys or click the nav buttons to navigate slides.
+## View Locally
+
+Open `index.html` in a browser. No build step is required.
